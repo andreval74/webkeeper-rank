@@ -1,0 +1,23 @@
+{
+  "name": "webkeeper-rank",
+  "private": true,
+  "version": "0.1.0",
+  "description": "WebKeeper Rank (WRI) — Digital Presence Intelligence Platform",
+  "workspaces": [
+    "backend",
+    "frontend",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:backend": "npm run start:dev --workspace=backend",
+    "dev:frontend": "npm run dev --workspace=frontend",
+    "check-env": "tsx scripts/check-env.ts"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.0"
+  },
+  "license": "MIT"
+}

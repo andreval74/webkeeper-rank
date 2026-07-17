@@ -1,0 +1,13 @@
+@import "tailwindcss";
+
+:root {
+  --wk-bg: #0b0f14;
+  --wk-surface: #121821;
+  --wk-primary: #4f7cff;
+  --wk-text: #e6ecf5;
+}
+
+body {
+  background-color: var(--wk-bg);
+  color: var(--wk-text);
+}
