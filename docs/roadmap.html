@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WebKeeper Rank — Status &amp; Roadmap</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Azeret+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* ============ THEME ============ */
+  :root {
+    --font-body: 'Plus Jakarta Sans', system-ui, sans-serif;
+    --font-mono: 'Azeret Mono', 'SF Mono', Consolas, monospace;
+
+    --bg: #f6f7fb;
+    --surface: #ffffff;
+    --surface2: #eef1f8;
+    --surface-elevated: #ffffff;
+    --border: rgba(15, 23, 42, 0.08);
+    --border-bright: rgba(15, 23, 42, 0.16);
+    --text: #0f1b2e;
+    --text-dim: #5b6b84;
+
+    --accent: #1e40af;
+    --accent-dim: rgba(30, 64, 175, 0.08);
+    --gold: #a8710a;
+    --gold-dim: rgba(168, 113, 10, 0.1);
+    --green: #15803d;
+    --green-dim: rgba(21, 128, 61, 0.09);
+    --rose: #be123c;
+    --rose-dim: rgba(190, 18, 60, 0.08);
+    --orange: #c2540c;
+    --orange-dim: rgba(194, 84, 12, 0.09);
+    --teal: #0f766e;
+    --teal-dim: rgba(15, 118, 110, 0.09);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0a1220;
+      --surface: #101a2e;
+      --surface2: #16233d;
+      --surface-elevated: #182948;
+      --border: rgba(255, 255, 255, 0.08);
+      --border-bright: rgba(255, 255, 255, 0.16);
+      --text: #e8edf7;
+      --text-dim: #93a2bd;
+
+      --accent: #6d97f2;
+      --accent-dim: rgba(109, 151, 242, 0.14);
+      --gold: #e3b341;
+      --gold-dim: rgba(227, 179, 65, 0.14);
+      --green: #4ade80;
+      --green-dim: rgba(74, 222, 128, 0.14);
+      --rose: #fb7185;
+      --rose-dim: rgba(251, 113, 133, 0.14);
+      --orange: #fb923c;
+      --orange-dim: rgba(251, 146, 60, 0.14);
+      --teal: #2dd4bf;
+      --teal-dim: rgba(45, 212, 191, 0.14);
+    }
+  }
+
+  :root[data-theme="light"] {
+    --bg: #f6f7fb; --surface: #ffffff; --surface2: #eef1f8; --surface-elevated: #ffffff;
+    --border: rgba(15, 23, 42, 0.08); --border-bright: rgba(15, 23, 42, 0.16);
+    --text: #0f1b2e; --text-dim: #5b6b84;
+    --accent: #1e40af; --accent-dim: rgba(30, 64, 175, 0.08);
+    --gold: #a8710a; --gold-dim: rgba(168, 113, 10, 0.1);
+    --green: #15803d; --green-dim: rgba(21, 128, 61, 0.09);
+    --rose: #be123c; --rose-dim: rgba(190, 18, 60, 0.08);
+    --orange: #c2540c; --orange-dim: rgba(194, 84, 12, 0.09);
+    --teal: #0f766e; --teal-dim: rgba(15, 118, 110, 0.09);
+  }
+
+  :root[data-theme="dark"] {
+    --bg: #0a1220; --surface: #101a2e; --surface2: #16233d; --surface-elevated: #182948;
+    --border: rgba(255, 255, 255, 0.08); --border-bright: rgba(255, 255, 255, 0.16);
+    --text: #e8edf7; --text-dim: #93a2bd;
+    --accent: #6d97f2; --accent-dim: rgba(109, 151, 242, 0.14);
+    --gold: #e3b341; --gold-dim: rgba(227, 179, 65, 0.14);
+    --green: #4ade80; --green-dim: rgba(74, 222, 128, 0.14);
+    --rose: #fb7185; --rose-dim: rgba(251, 113, 133, 0.14);
+    --orange: #fb923c; --orange-dim: rgba(251, 146, 60, 0.14);
+    --teal: #2dd4bf; --teal-dim: rgba(45, 212, 191, 0.14);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    background-image:
+      radial-gradient(ellipse at 15% -5%, var(--accent-dim) 0%, transparent 45%),
+      radial-gradient(ellipse at 100% 20%, var(--gold-dim) 0%, transparent 40%);
+    color: var(--text);
+    font-family: var(--font-body);
+    padding: 40px;
+    min-height: 100vh;
+    overflow-wrap: break-word;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .animate { animation: fadeUp 0.4s ease-out both; animation-delay: calc(var(--i, 0) * 0.05s); }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; animation-delay: 0ms !important; transition-duration: 0.01ms !important; }
+  }
+
+  .area-grid > *, .wri-grid > *, .role-grid > *, .split-two > *, .kpi-row > *,
+  .decision-list > *, .prompt-list > *, .next-steps-grid > *, .tag-scale > *, .auto-scale > *,
+  .pillar-flow > *, .pipeline > * { min-width: 0; }
+
+  /* ============ THEME TOGGLE ============ */
+  .theme-toggle {
+    position: fixed; top: 18px; right: 18px;
+    background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+    padding: 8px; cursor: pointer; z-index: 300; color: var(--text-dim);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .theme-toggle:hover { color: var(--text); border-color: var(--border-bright); }
+  [data-theme="light"] .theme-toggle__moon { display: none; }
+  [data-theme="dark"] .theme-toggle__sun { display: none; }
+
+  /* ============ LAYOUT / TOC ============ */
+  .wrap { max-width: 1320px; margin: 0 auto; display: grid; grid-template-columns: 200px 1fr; gap: 0 40px; transition: grid-template-columns 0.2s ease; }
+  .wrap.toc-collapsed { grid-template-columns: 40px 1fr; }
+  .main { min-width: 0; padding-bottom: 40px; }
+
+  .toc {
+    position: sticky; top: 24px; align-self: start; padding: 14px 0;
+    grid-row: 1 / -1; max-height: calc(100dvh - 48px); overflow-y: auto; overflow-x: hidden;
+  }
+  .toc::-webkit-scrollbar { width: 3px; }
+  .toc::-webkit-scrollbar-thumb { background: var(--surface-elevated); border-radius: 2px; }
+
+  .toc-toggle {
+    display: flex; align-items: center; justify-content: center; width: 26px; height: 26px;
+    background: var(--surface); border: 1px solid var(--border); border-radius: 6px; cursor: pointer;
+    color: var(--text-dim); margin-bottom: 10px; flex-shrink: 0;
+  }
+  .toc-toggle:hover { color: var(--text); border-color: var(--border-bright); }
+  .toc-toggle svg { width: 13px; height: 13px; transition: transform 0.2s ease; }
+  .wrap.toc-collapsed .toc-toggle svg { transform: rotate(180deg); }
+  .wrap.toc-collapsed .toc-title, .wrap.toc-collapsed .toc a { display: none; }
+
+  .toc-title {
+    font-family: var(--font-mono); font-size: 9px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 2px; color: var(--text-dim); padding: 0 0 10px; margin-bottom: 8px;
+    border-bottom: 1px solid var(--border); white-space: nowrap;
+  }
+  .toc a {
+    display: block; font-size: 11.5px; color: var(--text-dim); text-decoration: none;
+    padding: 5px 8px; border-radius: 5px; border-left: 2px solid transparent;
+    transition: all 0.15s; line-height: 1.4; margin-bottom: 1px; white-space: nowrap;
+  }
+  .toc a:hover { color: var(--text); background: var(--surface2); }
+  .toc a.active { color: var(--text); border-left-color: var(--accent); background: var(--accent-dim); }
+
+  @media (max-width: 1000px) {
+    .wrap, .wrap.toc-collapsed { grid-template-columns: 1fr; padding-top: 0; }
+    body { padding-top: 0; }
+    .toc-toggle { display: none; }
+    .toc {
+      position: sticky; top: 0; z-index: 200; max-height: none; display: flex; gap: 4px;
+      align-items: center; overflow-x: auto; overflow-y: visible; -webkit-overflow-scrolling: touch;
+      background: var(--bg); border-bottom: 1px solid var(--border);
+      padding: 10px 0; margin: 0 -40px; padding-left: 40px; padding-right: 40px; grid-row: auto;
+    }
+    .toc::-webkit-scrollbar { display: none; }
+    .toc-title { display: none; }
+    .toc a { display: block; white-space: nowrap; flex-shrink: 0; border-left: none; border-bottom: 2px solid transparent; border-radius: 4px 4px 0 0; padding: 6px 10px; font-size: 10px; }
+    .toc a.active { border-left: none; border-bottom-color: var(--accent); background: var(--surface); }
+    .main { padding-top: 20px; }
+    .sec-head { scroll-margin-top: 52px; }
+  }
+
+  /* ============ TYPOGRAPHY ============ */
+  h1 { font-size: 40px; font-weight: 800; letter-spacing: -1.2px; margin-bottom: 8px; text-wrap: balance; }
+  .kicker {
+    font-family: var(--font-mono); font-size: 11px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 2px; color: var(--gold); margin-bottom: 10px;
+  }
+  .subtitle { color: var(--text-dim); font-size: 15px; margin-bottom: 28px; max-width: 68ch; line-height: 1.6; }
+
+  .sec-head { display: flex; align-items: baseline; gap: 10px; margin: 56px 0 18px; }
+  .sec-head .num { font-family: var(--font-mono); font-size: 12px; color: var(--accent); font-weight: 600; }
+  .sec-head .title { font-size: 21px; font-weight: 700; letter-spacing: -0.3px; }
+  #s1.sec-head { margin-top: 0; }
+  .sec-sub { color: var(--text-dim); font-size: 13.5px; margin: -8px 0 20px; max-width: 70ch; line-height: 1.6; }
+  .sec-source {
+    font-family: var(--font-mono); font-size: 10.5px; color: var(--text-dim); margin: -14px 0 20px;
+    display: flex; align-items: center; gap: 6px;
+  }
+
+  /* ============ INLINE CODE (global default; .sec-source overrides to neutral) ============ */
+  code { font-family: var(--font-mono); font-size: 11px; background: var(--accent-dim); color: var(--accent); padding: 1px 5px; border-radius: 3px; }
+  .sec-source code { background: var(--surface2); color: var(--text-dim); padding: 1px 6px; border-radius: 4px; }
+
+  /* ============ CARD ============ */
+  .ve-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; position: relative; }
+  .ve-card--hero {
+    background: color-mix(in srgb, var(--surface) 90%, var(--accent) 10%);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.04);
+    border-color: color-mix(in srgb, var(--border) 45%, var(--accent) 55%);
+  }
+  .ve-card__label {
+    font-family: var(--font-mono); font-size: 10px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 1.5px; color: var(--text-dim); margin-bottom: 12px;
+  }
+
+  /* ============ HERO ============ */
+  .hero-quote { font-size: 19px; line-height: 1.55; font-weight: 500; margin-bottom: 16px; }
+  .hero-quote strong { color: var(--accent); font-weight: 700; }
+  .hero-meta-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 16px; }
+  .pill {
+    background: var(--surface2); border: 1px solid var(--border); border-radius: 999px;
+    padding: 6px 14px; font-family: var(--font-mono); font-size: 11.5px; color: var(--text-dim);
+    display: inline-flex; align-items: center; flex-shrink: 0;
+  }
+  .pill strong { color: var(--text); }
+  .pill--short { background: var(--accent-dim); color: var(--accent); border-color: transparent; }
+  .pill--mid { background: var(--gold-dim); color: var(--gold); border-color: transparent; }
+  .pill--long { background: var(--green-dim); color: var(--green); border-color: transparent; }
+
+  /* ============ STATUS BADGE ============ */
+  .status {
+    display: inline-flex; align-items: center; gap: 5px; font-family: var(--font-mono); font-size: 10px;
+    font-weight: 600; padding: 3px 9px; border-radius: 6px; white-space: nowrap; text-transform: uppercase; letter-spacing: 0.5px;
+    flex-shrink: 0;
+  }
+  .status--done { background: var(--green-dim); color: var(--green); }
+  .status--partial { background: var(--gold-dim); color: var(--gold); }
+  .status--pending { background: var(--surface2); color: var(--text-dim); }
+  .status--blocked { background: var(--rose-dim); color: var(--rose); }
+
+  /* ============ STATUS ATUAL — KPI row + cards por área ============ */
+  .kpi-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 10px; margin-bottom: 16px; }
+  .kpi-tile { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; text-align: center; }
+  .kpi-value { font-size: 26px; font-weight: 800; letter-spacing: -0.5px; font-variant-numeric: tabular-nums; }
+  .kpi-label { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-dim); margin-top: 2px; }
+  .kpi-tile--done .kpi-value { color: var(--green); }
+  .kpi-tile--partial .kpi-value { color: var(--gold); }
+  .kpi-tile--pending .kpi-value { color: var(--text-dim); }
+  .kpi-tile--blocked .kpi-value { color: var(--rose); }
+
+  .area-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .area-card .area-title { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+  .area-card .area-count { font-family: var(--font-mono); font-size: 11px; color: var(--text-dim); margin-bottom: 12px; }
+  .status-item { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; padding: 7px 0; border-top: 1px solid var(--border); }
+  .status-item:first-of-type { border-top: none; }
+  .status-item .si-label { font-size: 12.5px; line-height: 1.4; }
+  .status-item .si-note { display: block; font-size: 11px; color: var(--text-dim); margin-top: 2px; line-height: 1.4; }
+
+  /* ============ PRÓXIMOS PASSOS (grouped executable prompts) ============ */
+  .next-steps-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; align-items: start; }
+
+  .prompt-list { display: flex; flex-direction: column; gap: 10px; }
+
+  .prompt-group-label {
+    font-family: var(--font-mono); font-size: 10px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 1.5px; color: var(--text-dim); margin: 10px 0 -2px; padding-left: 2px;
+  }
+  .prompt-group-label:first-child { margin-top: 0; }
+
+  .prompt-card { border: 1px solid var(--border); border-left: 3px solid var(--border-bright); border-radius: 10px; overflow: hidden; background: var(--surface); }
+  .prompt-card--short { border-left-color: var(--accent); }
+  .prompt-card--mid { border-left-color: var(--gold); }
+  .prompt-card--long { border-left-color: var(--green); }
+  .prompt-card summary {
+    padding: 13px 16px; cursor: pointer; list-style: none; display: flex; align-items: center; gap: 10px;
+    font-weight: 700; font-size: 13.5px; transition: background 0.15s ease;
+  }
+  .prompt-card summary:hover { background: var(--surface2); }
+  .prompt-card summary::-webkit-details-marker { display: none; }
+  .prompt-card summary::before { content: '▸'; font-size: 11px; color: var(--text-dim); transition: transform 0.15s ease; flex-shrink: 0; }
+  .prompt-card[open] summary::before { transform: rotate(90deg); }
+  .prompt-card .summary-text { flex: 1; min-width: 0; }
+  .prompt-body { padding: 0 16px 16px; border-top: 1px solid var(--border); }
+  .prompt-goal { font-size: 12.5px; color: var(--text-dim); margin: 14px 0 10px; line-height: 1.55; }
+  .prompt-block-wrap { position: relative; }
+  .prompt-block {
+    background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px;
+    padding-right: 76px; font-family: var(--font-mono); font-size: 11.5px; line-height: 1.65;
+    white-space: pre-wrap; word-break: break-word; max-height: 320px; overflow-y: auto;
+  }
+  .copy-btn {
+    position: absolute; top: 8px; right: 8px; background: var(--surface); border: 1px solid var(--border);
+    border-radius: 6px; padding: 5px 10px; font-family: var(--font-mono); font-size: 10px; color: var(--text-dim);
+    cursor: pointer; transition: all 0.15s ease;
+  }
+  .copy-btn:hover { color: var(--text); border-color: var(--border-bright); }
+  .copy-btn.is-copied { color: var(--green); border-color: var(--green); }
+
+  /* ============ PILLARS CYCLE (4-col grid = 2 rows for 7 items, no h-scroll) ============ */
+  .pillar-flow { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  .pillar-step { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; }
+  .p-head { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .p-icon {
+    width: 30px; height: 30px; border-radius: 50%; background: var(--accent-dim); color: var(--accent);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .p-icon svg { width: 16px; height: 16px; }
+  .p-head .p-num { font-family: var(--font-mono); font-size: 11px; font-weight: 700; color: var(--text-dim); }
+  .pillar-step .p-name { font-size: 14.5px; font-weight: 700; margin-bottom: 5px; }
+  .pillar-step .p-desc { font-size: 11.5px; color: var(--text-dim); line-height: 1.5; }
+  .pillar-loop {
+    margin: 14px auto 0; display: flex; align-items: center; gap: 8px; justify-content: center;
+    font-family: var(--font-mono); font-size: 11px; color: var(--gold); background: var(--gold-dim);
+    border-radius: 999px; padding: 7px 16px; width: fit-content;
+  }
+  .pillar-loop svg { width: 15px; height: 15px; flex-shrink: 0; }
+
+  /* ============ WRI INDEX GRID ============ */
+  .wri-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px; }
+  .wri-card { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--border-bright); border-radius: 10px; padding: 16px 18px; }
+  .wri-card--mvp { border-left-color: var(--gold); }
+  .wri-card .wc-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+  .wri-card .wc-name { font-size: 14px; font-weight: 700; }
+  .wri-card .wc-desc { font-size: 12px; color: var(--text-dim); line-height: 1.5; }
+
+  /* ============ PIPELINE (fluxo minimo — 3-col grid = 2 rows for 5 steps, no h-scroll) ============ */
+  .pipeline { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .pipeline-step { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; text-align: left; }
+  .pipeline-step .step-num { font-family: var(--font-mono); font-size: 10px; font-weight: 700; color: var(--gold); margin-bottom: 5px; }
+  .pipeline-step .step-name { font-size: 13.5px; font-weight: 700; margin-bottom: 4px; }
+  .pipeline-step .step-detail { font-size: 11.5px; color: var(--text-dim); line-height: 1.5; }
+  .pipeline-check {
+    margin: 14px auto 0; display: flex; align-items: center; gap: 8px; justify-content: center;
+    font-family: var(--font-mono); font-size: 11px; color: var(--green); background: var(--green-dim);
+    border-radius: 999px; padding: 7px 16px; width: fit-content;
+  }
+  .pipeline-check svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+  /* ============ ROLE GRID ============ */
+  .role-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; }
+  .role-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; }
+  .role-card .r-name { font-size: 13.5px; font-weight: 700; margin-bottom: 5px; display: flex; align-items: center; gap: 7px; }
+  .role-card .r-name .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+  .role-card--ai .r-name .dot { background: var(--gold); }
+  .role-card .r-desc { font-size: 12px; color: var(--text-dim); line-height: 1.5; }
+
+  /* ============ RECOMMENDATION / AUTOMATION ============ */
+  .split-two { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .tag-scale { display: flex; flex-direction: column; gap: 8px; }
+  .tag-row { display: flex; align-items: center; gap: 10px; }
+  .tag-row .swatch { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
+  .tag-row .label { font-size: 13px; font-weight: 600; }
+
+  .auto-scale { display: flex; flex-direction: column; gap: 10px; }
+  .auto-row { display: flex; align-items: center; gap: 12px; }
+  .auto-row .bar-wrap { flex: 1; height: 6px; background: var(--surface2); border-radius: 3px; overflow: hidden; }
+  .auto-row .bar { height: 100%; background: linear-gradient(90deg, var(--accent), var(--gold)); border-radius: 3px; }
+  .auto-row .label { font-size: 12.5px; font-weight: 600; min-width: 108px; }
+
+  /* ============ DECISIONS LOG ============ */
+  .decision-list { display: flex; flex-direction: column; gap: 12px; }
+  .decision-item { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; }
+  .decision-item .d-date { font-family: var(--font-mono); font-size: 10.5px; color: var(--gold); margin-bottom: 4px; }
+  .decision-item .d-title { font-size: 14px; font-weight: 700; margin-bottom: 5px; }
+  .decision-item .d-body { font-size: 12.5px; color: var(--text-dim); line-height: 1.6; }
+
+  /* ============ SCOPE OUT ============ */
+  .scope-grid { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 14px; }
+  .scope-tag { display: inline-flex; align-items: center; gap: 6px; background: var(--rose-dim); color: var(--rose); border-radius: 8px; padding: 7px 12px; font-size: 12.5px; font-weight: 600; }
+  .scope-tag svg { width: 13px; height: 13px; flex-shrink: 0; }
+
+  /* ============ CALLOUT (base + color modifiers; used for howto, risk, and notes) ============ */
+  .callout {
+    background: var(--surface2); border: 1px solid var(--border); border-left: 3px solid var(--gold);
+    border-radius: 0 10px 10px 0; padding: 14px 18px; font-size: 13px; line-height: 1.6; color: var(--text-dim);
+    margin: 16px 0;
+  }
+  .callout strong { color: var(--text); font-weight: 700; }
+  .callout--rose { border-left-color: var(--rose); background: var(--rose-dim); }
+  .callout--rose strong { color: var(--rose); }
+  .callout--accent { border-left-color: var(--accent); }
+  .callout ol { list-style: none; counter-reset: howto; margin-top: 8px; display: flex; flex-direction: column; gap: 4px; }
+  .callout ol li { counter-increment: howto; padding-left: 22px; position: relative; }
+  .callout ol li::before { content: counter(howto) '.'; position: absolute; left: 0; color: var(--accent); font-weight: 700; font-family: var(--font-mono); font-size: 11.5px; }
+
+  /* ============ RECESSED (lighter/reference sections: Pilares, Fluxo mínimo) ============ */
+  .is-recessed {
+    background: color-mix(in srgb, var(--bg) 65%, var(--surface) 35%);
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+  }
+
+  /* ============ FOOTER ============ */
+  .footer { margin-top: 56px; padding-top: 20px; border-top: 1px solid var(--border); font-family: var(--font-mono); font-size: 11px; color: var(--text-dim); line-height: 1.7; }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width: 768px) {
+    body { padding: 20px; }
+    h1 { font-size: 28px; }
+    .split-two { grid-template-columns: 1fr; }
+    .next-steps-grid { grid-template-columns: 1fr; }
+    .area-grid { grid-template-columns: 1fr; }
+    .pillar-flow { grid-template-columns: repeat(2, 1fr); }
+    .pipeline { grid-template-columns: repeat(2, 1fr); }
+    .theme-toggle { top: 10px; right: 10px; }
+    .prompt-card summary { flex-wrap: wrap; }
+  }
+</style>
+</head>
+<body>
+
+<button class="theme-toggle" onclick="(function(){var r=document.documentElement,c=r.getAttribute('data-theme')==='light'?'dark':'light';r.setAttribute('data-theme',c);})()" aria-label="Alternar tema">
+  <svg class="theme-toggle__sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+  <svg class="theme-toggle__moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+</button>
+
+<div class="wrap">
+
+  <nav class="toc" id="toc">
+    <button class="toc-toggle" id="tocToggle" type="button" aria-label="Recolher/expandir sumário">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg>
+    </button>
+    <div class="toc-title">Sumário</div>
+    <a href="#s1">01. Visão</a>
+    <a href="#s2">02. Status atual</a>
+    <a href="#s3">03. Próximos passos</a>
+    <a href="#s4">04. Pilares</a>
+    <a href="#s5">05. Índice WRI</a>
+    <a href="#s6">06. Fluxo mínimo</a>
+    <a href="#s7">07. Perfis de usuário</a>
+    <a href="#s8">08. Recomendações &amp; automação</a>
+    <a href="#s9">09. Decisões recentes</a>
+    <a href="#s10">10. Fora do escopo</a>
+  </nav>
+
+  <div class="main">
+
+    <div class="kicker animate" style="--i:0">docs/roadmap.html &middot; painel vivo de status</div>
+    <h1 class="animate" style="--i:1">WebKeeper Rank — Status &amp; Roadmap</h1>
+    <p class="subtitle animate" style="--i:2">
+      Onde o projeto está agora e o que fazer a seguir — combinando o que os documentos planejam com o que o
+      código realmente entrega hoje. Gerado com a skill <code>/visual-explainer</code>.
+    </p>
+
+    <div id="s1" class="sec-head animate" style="--i:3"><span class="num">01</span><span class="title">Visão</span></div>
+    <div class="ve-card ve-card--hero animate" style="--i:4">
+      <p class="hero-quote">
+        O <strong>WebKeeper Rank (WRI)</strong> é uma plataforma de <strong>Digital&nbsp;Presence&nbsp;Intelligence&nbsp;(DPI)</strong>
+        baseada em IA, que mede, explica, otimiza e automatiza toda a presença digital de empresas em
+        mecanismos de busca, plataformas de IA, redes sociais, mapas, diretórios e demais canais digitais.
+      </p>
+      <p style="font-size:13.5px;color:var(--text-dim);line-height:1.6;">
+        O WRI não compete como "mais uma ferramenta de SEO" — ele cria sua própria categoria.
+      </p>
+      <div class="hero-meta-row">
+        <span class="pill">Categoria: <strong>Digital Presence Intelligence</strong></span>
+        <span class="pill">Constituição, regra 1: <strong>toda feature aumenta o valor do WRI</strong></span>
+      </div>
+    </div>
+
+    <div id="s2" class="sec-head animate" style="--i:5"><span class="num">02</span><span class="title">Status atual</span></div>
+    <p class="sec-source animate" style="--i:6">Fonte: <code>docs/MASTER_CHECKLIST.md</code> cruzado com o código real (backend, frontend, git log).</p>
+
+    <div class="kpi-row animate" style="--i:7">
+      <div class="kpi-tile kpi-tile--done"><div class="kpi-value">9</div><div class="kpi-label">Concluído</div></div>
+      <div class="kpi-tile kpi-tile--partial"><div class="kpi-value">1</div><div class="kpi-label">Parcial</div></div>
+      <div class="kpi-tile kpi-tile--pending"><div class="kpi-value">11</div><div class="kpi-label">Pendente</div></div>
+      <div class="kpi-tile kpi-tile--blocked"><div class="kpi-value">1</div><div class="kpi-label">Bloqueado</div></div>
+    </div>
+
+    <div class="area-grid animate" style="--i:8">
+
+      <div class="ve-card area-card">
+        <div class="area-title">Infraestrutura</div>
+        <div class="area-count">2 concluídos · 3 pendentes</div>
+        <div class="status-item"><div class="si-label">Monorepo (npm workspaces)</div><span class="status status--done">Concluído</span></div>
+        <div class="status-item"><div class="si-label">Docs essenciais<span class="si-note">VISION, PRODUCT, ARCHITECTURE, STACK, CLAUDE.md</span></div><span class="status status--done">Concluído</span></div>
+        <div class="status-item"><div class="si-label">Docs completos<span class="si-note">12 arquivos: MODULES, RULES, AI_AGENTS, DESIGN_SYSTEM, API, SECURITY...</span></div><span class="status status--pending">Pendente</span></div>
+        <div class="status-item"><div class="si-label">Docker Compose<span class="si-note">Docker não instalado na máquina de dev</span></div><span class="status status--blocked">Bloqueado</span></div>
+        <div class="status-item"><div class="si-label">CI/CD, Dependabot, CODEOWNERS</div><span class="status status--pending">Pendente</span></div>
+      </div>
+
+      <div class="ve-card area-card">
+        <div class="area-title">Backend</div>
+        <div class="area-count">4 concluídos · 1 parcial · 3 pendentes</div>
+        <div class="status-item"><div class="si-label">Bootstrap NestJS + Fastify</div><span class="status status--done">Concluído</span></div>
+        <div class="status-item"><div class="si-label">Prisma schema<span class="si-note">User, Company, CompanyMember, Project, Metric, WriScore</span></div><span class="status status--done">Concluído</span></div>
+        <div class="status-item"><div class="si-label">Auth JWT (registro/login)</div><span class="status status--done">Concluído</span></div>
+        <div class="status-item"><div class="si-label">Módulo Company (empresa + projeto)</div><span class="status status--done">Concluído</span></div>
+        <div class="status-item"><div class="si-label">Auditoria WRI determinística<span class="si-note">MVP: 4 checks (HTTPS, status OK, title, meta description)</span></div><span class="status status--partial">Parcial (MVP)</span></div>
+        <div class="status-item"><div class="si-label">Módulos das 12 categorias do WRI</div><span class="status status--pending">Pendente</span></div>
+        <div class="status-item"><div class="si-label">Filas assíncronas (BullMQ + Redis)</div><span class="status status--pending">Pendente</span></div>
+        <div class="status-item"><div class="si-label">RBAC avançado / multiempresa</div><span class="status status--pending">Pendente</span></div>
+      </div>
+
+      <div class="ve-card area-card">
+        <div class="area-title">Frontend</div>
+        <div class="area-count">3 concluídos · 2 pendentes</div>
+        <div class="status-item"><div class="si-label">Bootstrap Next.js 16 + React 19</div><span class="status status--done">Concluído</span></div>
+        <div class="status-item"><div class="si-label">Tela de login / registro</div><span class="status status--done">Concluído</span></div>
+        <div class="status-item"><div class="si-label">Dashboard com WriScore</div><span class="status status--done">Concluído</span></div>
+        <div class="status-item"><div class="si-label">Design System completo<span class="si-note">paleta oficial, dark theme, motion</span></div><span class="status status--pending">Pendente</span></div>
+        <div class="status-item"><div class="si-label">Wizard de configuração com UI</div><span class="status status--pending">Pendente</span></div>
+      </div>
+
+      <div class="ve-card area-card">
+        <div class="area-title">Qualidade &amp; operação</div>
+        <div class="area-count">0 concluídos · 4 pendentes</div>
+        <div class="status-item"><div class="si-label">Testes automatizados<span class="si-note">nenhum teste hoje, backend ou frontend</span></div><span class="status status--pending">Pendente</span></div>
+        <div class="status-item"><div class="si-label">CI/CD (lint + build + test)</div><span class="status status--pending">Pendente</span></div>
+        <div class="status-item"><div class="si-label">Observabilidade<span class="si-note">Grafana, Prometheus, Sentry</span></div><span class="status status--pending">Pendente</span></div>
+        <div class="status-item"><div class="si-label">Billing</div><span class="status status--pending">Pendente</span></div>
+      </div>
+
+    </div>
+    <div class="callout callout--rose animate" style="--i:9">
+      <strong>Maior risco atual:</strong> zero testes automatizados e nenhum CI configurado — qualquer regressão só é detectada manualmente. O fluxo ponta a ponta (registro → empresa → projeto → auditoria → score) foi validado uma única vez, manualmente, no commit inicial.
+    </div>
+
+    <div id="s3" class="sec-head animate" style="--i:10"><span class="num">03</span><span class="title">Próximos passos</span></div>
+    <p class="sec-source animate" style="--i:11">Fonte: <code>docs/BACKLOG.md</code> + itens pendentes de <code>docs/MASTER_CHECKLIST.md</code>, organizados pelo horizonte de <code>docs/VISION.md</code>. Cada fase abaixo já vem com um prompt pronto para rodar.</p>
+
+    <div class="callout callout--accent animate" style="--i:12">
+      <strong>Como usar:</strong> clique numa fase para abrir o prompt pronto. Copie, cole numa sessão do Claude Code neste repositório, e siga o ciclo.
+      <ol>
+        <li>Copie o prompt da fase que quer atacar e cole no chat.</li>
+        <li>Se durante a execução surgir alguma dúvida ou decisão não coberta pelo prompt, a IA deve perguntar antes de decidir sozinha — nunca assumir.</li>
+        <li>Ao terminar a implementação, peça para rodar o subagente <code>roadmap-verifier</code> (ou <code>/verify</code> e/ou <code>/code-review</code>) — isso confirma se o resultado ficou como esperado.</li>
+        <li>Só depois de verificado: peça para atualizar este arquivo — remova o prompt desta fase, mova o item para "Status atual" como Concluído, e registre uma entrada em <code>docs/EXECUTION_LOG.md</code>. Ou ajuste o prompt, se algo ainda estiver faltando.</li>
+      </ol>
+    </div>
+
+    <div class="next-steps-grid animate" style="--i:13">
+
+      <div class="prompt-list">
+        <div class="prompt-group-label">Curto prazo</div>
+
+        <details class="prompt-card prompt-card--short">
+          <summary><span class="pill pill--short">Curto prazo</span><span class="summary-text">Aprofundar a auditoria determinística</span></summary>
+          <div class="prompt-body">
+            <p class="prompt-goal">Ampliar <code>backend/src/modules/wri/wri-audit.util.ts</code> para checks reais além dos 4 atuais.</p>
+            <div class="prompt-block-wrap">
+              <button class="copy-btn" type="button">Copiar</button>
+              <div class="prompt-block">Leia docs/PRODUCT.md (seção "Níveis do WRI") e backend/src/modules/wri/wri-audit.util.ts. Hoje a auditoria determinística roda só 4 checks (HTTPS, status HTTP OK, tag &lt;title&gt;, meta description). Amplie o motor para cobrir mais sinais reais dentro de Security, Performance e SEO — por exemplo: headers de segurança (CSP, HSTS, X-Frame-Options), validade do certificado SSL, presença de robots.txt e sitemap.xml, tempo de resposta do servidor, dados estruturados (JSON-LD). Mantenha o cálculo 100% determinístico, sem chamadas a LLM (docs/DECISIONS.md, decisão "Escopo enxuto"). Cada novo check deve virar uma Metric rastreável (Constituição, regra 6). Ao final, rode a auditoria contra um domínio real para confirmar que o score muda de forma coerente, e atualize docs/MASTER_CHECKLIST.md. Se qualquer decisão não estiver clara (ex. quais headers priorizar, qual biblioteca usar para parsing), pergunte ao usuário antes de prosseguir — não assuma.</div>
+            </div>
+          </div>
+        </details>
+
+        <details class="prompt-card prompt-card--short">
+          <summary><span class="pill pill--short">Curto prazo</span><span class="summary-text">Adicionar testes automatizados</span></summary>
+          <div class="prompt-body">
+            <p class="prompt-goal">Cobrir os fluxos críticos do backend e do frontend — hoje não existe nenhum teste.</p>
+            <div class="prompt-block-wrap">
+              <button class="copy-btn" type="button">Copiar</button>
+              <div class="prompt-block">O projeto não tem nenhum teste automatizado hoje (nem backend, nem frontend). Configure Jest no backend (padrão NestJS) cobrindo pelo menos: auth (registro e login), company (criar empresa/projeto) e wri (rodar auditoria e calcular WriScore). No frontend, configure uma stack de testes compatível com Next.js 16 / React 19 (ex. Vitest + Testing Library) cobrindo o fluxo de login e o dashboard (criar empresa, rodar auditoria, ver o score). Não é preciso testes end-to-end completos agora — foco nos caminhos críticos. Ao final, rode os testes e confirme que todos passam antes de considerar concluído. Se qualquer decisão não estiver clara (ex. qual framework de testes escolher), pergunte ao usuário antes de prosseguir — não assuma.</div>
+            </div>
+          </div>
+        </details>
+
+        <details class="prompt-card prompt-card--short">
+          <summary><span class="pill pill--short">Curto prazo</span><span class="summary-text">Configurar CI básico no GitHub Actions</span></summary>
+          <div class="prompt-body">
+            <p class="prompt-goal">Lint, build e test automáticos em todo PR — hoje não existe nenhum workflow.</p>
+            <div class="prompt-block-wrap">
+              <button class="copy-btn" type="button">Copiar</button>
+              <div class="prompt-block">Crie .github/workflows/ci.yml rodando em push e pull_request para main: instalar dependências (npm workspaces), lint do backend e do frontend, build de ambos, e os testes automatizados (depende da fase anterior já estar feita). Sem deploy ainda — só validação. Depois de criar o workflow, revise a sintaxe (actionlint ou leitura manual) e, se alguma escolha relevante for feita (ex. versão do Node no runner), registre em docs/DECISIONS.md. Se qualquer decisão não estiver clara, pergunte ao usuário antes de prosseguir — não assuma.</div>
+            </div>
+          </div>
+        </details>
+      </div>
+
+      <div class="prompt-list">
+        <div class="prompt-group-label">Médio prazo</div>
+
+        <details class="prompt-card prompt-card--mid">
+          <summary><span class="pill pill--mid">Médio prazo</span><span class="summary-text">Completar os módulos das demais categorias do WRI</span></summary>
+          <div class="prompt-body">
+            <p class="prompt-goal">9 categorias pendentes (GEO, AEO, Brand, Authority, UX, Reputation, Social, Local, Conversion) — grande demais para um prompt só, por isso este pede um plano.</p>
+            <div class="prompt-block-wrap">
+              <button class="copy-btn" type="button">Copiar</button>
+              <div class="prompt-block">Rode /make-plan pedindo: "Planeje a implementação do módulo GEO (Generative Engine Optimization) como o próximo módulo de auditoria do WRI, replicando o padrão do módulo wri existente em backend/src/modules/wri (schema Prisma, serviço de auditoria, endpoint, persistência em Metric/WriScore). O plano deve deixar explícito como esse padrão se repete para as outras 8 categorias pendentes (AEO, Brand, Authority, UX, Reputation, Social, Local, Conversion), para que cada uma vire uma fase separada." Se qualquer decisão não estiver clara durante o planejamento ou a execução, pergunte ao usuário antes de prosseguir — não assuma.</div>
+            </div>
+          </div>
+        </details>
+
+        <details class="prompt-card prompt-card--mid">
+          <summary><span class="pill pill--mid">Médio prazo</span><span class="summary-text">Camada de abstração de IA + primeiro agente explicativo</span></summary>
+          <div class="prompt-body">
+            <p class="prompt-goal">Nenhuma integração de IA existe hoje — a Constituição exige camada de abstração antes de qualquer chamada direta a um provedor.</p>
+            <div class="prompt-block-wrap">
+              <button class="copy-btn" type="button">Copiar</button>
+              <div class="prompt-block">Leia docs/STACK.md (seção IA) e a Constituição em CLAUDE.md, regras 2 ("a IA deve explicar antes de recomendar") e 5 ("toda integração externa deve possuir camada de abstração"). Implemente uma camada de abstração de provedores de IA no backend (ex. um serviço com interface comum, começando com um único provedor real via SDK oficial) e um primeiro agente que recebe o resultado de uma auditoria WRI e gera, em linguagem natural, a explicação do porquê daquele score — antes de qualquer recomendação futura. Registre em docs/DECISIONS.md qual provedor foi escolhido primeiro e por quê. Se qualquer decisão não estiver clara (ex. qual provedor de IA usar), pergunte ao usuário antes de prosseguir — não assuma.</div>
+            </div>
+          </div>
+        </details>
+
+        <details class="prompt-card prompt-card--mid">
+          <summary><span class="pill pill--mid">Médio prazo</span><span class="summary-text">Wizard de configuração com UI administrativa</span></summary>
+          <div class="prompt-body">
+            <p class="prompt-goal">Hoje a configuração é só .env + scripts/check-env.ts — sem nenhuma UI.</p>
+            <div class="prompt-block-wrap">
+              <button class="copy-btn" type="button">Copiar</button>
+              <div class="prompt-block">Planeje e implemente um wizard de configuração no frontend (novo fluxo, ex. /settings ou /onboarding) para substituir a edição manual do .env nos itens que fazem sentido configurar em runtime (ex. chaves de integrações futuras). Se o escopo parecer grande depois de olhar o que existe hoje, rode /make-plan antes de implementar direto. Se qualquer decisão não estiver clara, pergunte ao usuário antes de prosseguir — não assuma.</div>
+            </div>
+          </div>
+        </details>
+
+        <details class="prompt-card prompt-card--mid">
+          <summary><span class="pill pill--mid">Médio prazo</span><span class="summary-text">Design System completo</span></summary>
+          <div class="prompt-body">
+            <p class="prompt-goal">Paleta oficial, tipografia, componentes e dark theme ainda não estão documentados nem aplicados.</p>
+            <div class="prompt-block-wrap">
+              <button class="copy-btn" type="button">Copiar</button>
+              <div class="prompt-block">Leia docs/STACK.md (Tailwind 4 + shadcn/ui) e defina a paleta oficial, tipografia, componentes base e dark theme do WebKeeper Rank. Documente tudo em um novo docs/DESIGN_SYSTEM.md seguindo a convenção de estrutura do CLAUDE.md (Objetivo, Responsabilidades, Dependências, Fluxo, Regras, Exemplos, Decisões, Pendências, Roadmap). Depois aplique a paleta/tema nas telas existentes (login e dashboard). Se qualquer decisão não estiver clara (ex. cores exatas da paleta), pergunte ao usuário antes de prosseguir — não assuma.</div>
+            </div>
+          </div>
+        </details>
+      </div>
+
+      <div class="prompt-list">
+        <div class="prompt-group-label">Longo prazo</div>
+
+        <details class="prompt-card prompt-card--long">
+          <summary><span class="pill pill--long">Longo prazo</span><span class="summary-text">Integrações externas (Google, SEO tools, redes sociais)</span></summary>
+          <div class="prompt-body">
+            <p class="prompt-goal">Depende de decisões de priorização e da camada de abstração já estar madura.</p>
+            <div class="prompt-block-wrap">
+              <button class="copy-btn" type="button">Copiar</button>
+              <div class="prompt-block">Rode /make-plan pedindo um plano de priorização e implementação das integrações externas listadas em docs/BACKLOG.md — Google (Search Console, Analytics, Business) primeiro, depois ferramentas de SEO (Semrush, Ahrefs, Moz, DataForSEO, SerpAPI), depois redes sociais (Meta, LinkedIn, TikTok). Cada integração deve respeitar a Constituição, regra 5 (camada de abstração obrigatória). Se qualquer decisão de priorização não estiver clara, pergunte ao usuário antes de prosseguir — não assuma.</div>
+            </div>
+          </div>
+        </details>
+
+        <details class="prompt-card prompt-card--long">
+          <summary><span class="pill pill--long">Longo prazo</span><span class="summary-text">Billing e observabilidade</span></summary>
+          <div class="prompt-body">
+            <p class="prompt-goal">Sem isso, o sistema não consegue cobrar de um cliente nem saber quando algo quebra em produção.</p>
+            <div class="prompt-block-wrap">
+              <button class="copy-btn" type="button">Copiar</button>
+              <div class="prompt-block">Rode /make-plan pedindo um plano para introduzir billing (escolher entre Stripe, Mercado Pago, Asaas ou Pagar.me e registrar a escolha em docs/DECISIONS.md) e observabilidade (Grafana, Prometheus, Sentry), priorizando o que bloqueia cobrar do primeiro cliente pagante. Se qualquer decisão não estiver clara (ex. qual provedor de billing escolher), pergunte ao usuário antes de prosseguir — não assuma.</div>
+            </div>
+          </div>
+        </details>
+
+        <details class="prompt-card prompt-card--long">
+          <summary><span class="pill pill--long">Longo prazo</span><span class="summary-text">Automação autônoma multiempresa</span></summary>
+          <div class="prompt-body">
+            <p class="prompt-goal">O item mais distante do roadmap — só faz sentido depois que os módulos do WRI, a IA explicativa, os testes/CI e o billing estiverem maduros.</p>
+            <div class="prompt-block-wrap">
+              <button class="copy-btn" type="button">Copiar</button>
+              <div class="prompt-block">Quando os itens anteriores deste roadmap estiverem prontos, rode /make-plan pedindo um plano de automação autônoma para milhares de empresas simultaneamente — cobrindo filas assíncronas (BullMQ + Redis), reversibilidade de toda automação (Constituição, regra 8) e RBAC avançado por perfil de usuário. Se qualquer decisão não estiver clara, pergunte ao usuário antes de prosseguir — não assuma.</div>
+            </div>
+          </div>
+        </details>
+      </div>
+
+    </div>
+
+    <div id="s4" class="sec-head animate" style="--i:14"><span class="num">04</span><span class="title">Pilares do produto</span></div>
+    <p class="sec-sub animate" style="--i:15">Todo módulo do sistema deve fortalecer pelo menos um destes sete pilares — organizados como um ciclo contínuo.</p>
+    <div class="pillar-flow animate" style="--i:16">
+      <div class="pillar-step is-recessed">
+        <div class="p-head"><div class="p-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="10" cy="10" r="6"/><path d="M20 20l-5.5-5.5"/></svg></div><div class="p-num">01</div></div>
+        <div class="p-name">Analisar</div><div class="p-desc">Coleta e processa dados brutos da presença digital</div>
+      </div>
+      <div class="pillar-step is-recessed">
+        <div class="p-head"><div class="p-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H9l-4 4v-4H6a2 2 0 0 1-2-2V5z"/></svg></div><div class="p-num">02</div></div>
+        <div class="p-name">Explicar</div><div class="p-desc">Traduz achados técnicos antes de qualquer recomendação</div>
+      </div>
+      <div class="pillar-step is-recessed">
+        <div class="p-head"><div class="p-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h11M4 18h6"/></svg></div><div class="p-num">03</div></div>
+        <div class="p-name">Priorizar</div><div class="p-desc">Classifica ações por impacto estimado e urgência</div>
+      </div>
+      <div class="pillar-step is-recessed">
+        <div class="p-head"><div class="p-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M10 8l6 4-6 4V8z"/></svg></div><div class="p-num">04</div></div>
+        <div class="p-name">Executar</div><div class="p-desc">Aplica mudanças aprovadas nos canais integrados</div>
+      </div>
+      <div class="pillar-step is-recessed">
+        <div class="p-head"><div class="p-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg></div><div class="p-num">05</div></div>
+        <div class="p-name">Automatizar</div><div class="p-desc">Repete ações validadas dentro do nível autorizado</div>
+      </div>
+      <div class="pillar-step is-recessed">
+        <div class="p-head"><div class="p-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></div><div class="p-num">06</div></div>
+        <div class="p-name">Monitorar</div><div class="p-desc">Acompanha o efeito das mudanças ao longo do tempo</div>
+      </div>
+      <div class="pillar-step is-recessed">
+        <div class="p-head"><div class="p-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 18l6-6 4 4 6-8"/><path d="M14 8h6v6"/></svg></div><div class="p-num">07</div></div>
+        <div class="p-name">Aprender</div><div class="p-desc">Realimenta o ciclo com os resultados observados</div>
+      </div>
+    </div>
+    <div class="pillar-loop animate" style="--i:17">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 1 3 6.7M3 12v5h5"/></svg>
+      realimenta o pilar "Analisar" — ciclo contínuo
+    </div>
+
+    <div id="s5" class="sec-head animate" style="--i:18"><span class="num">05</span><span class="title">Índice WRI — 12 níveis</span></div>
+    <p class="sec-sub animate" style="--i:19">
+      Cada categoria possui dezenas de métricas próprias. Hoje, <strong style="color:var(--text)">Security</strong>,
+      <strong style="color:var(--text)">Performance</strong> e <strong style="color:var(--text)">SEO</strong> têm cobertura
+      mínima (1–2 checks cada, dentro do MVP de auditoria). As demais nove categorias ainda não foram iniciadas.
+    </p>
+    <div class="wri-grid animate" style="--i:20">
+      <div class="wri-card wri-card--mvp"><div class="wc-top"><span class="wc-name">SEO</span><span class="status status--partial">MVP</span></div><div class="wc-desc">Visibilidade em mecanismos de busca tradicionais</div></div>
+      <div class="wri-card"><div class="wc-top"><span class="wc-name">GEO</span><span class="status status--pending">Roadmap</span></div><div class="wc-desc">Otimização para mecanismos de busca generativos (IA)</div></div>
+      <div class="wri-card"><div class="wc-top"><span class="wc-name">AEO</span><span class="status status--pending">Roadmap</span></div><div class="wc-desc">Otimização para motores de resposta (answer engines)</div></div>
+      <div class="wri-card"><div class="wc-top"><span class="wc-name">Brand</span><span class="status status--pending">Roadmap</span></div><div class="wc-desc">Consistência e força da marca nos canais digitais</div></div>
+      <div class="wri-card"><div class="wc-top"><span class="wc-name">Authority</span><span class="status status--pending">Roadmap</span></div><div class="wc-desc">Autoridade e confiança do domínio</div></div>
+      <div class="wri-card wri-card--mvp"><div class="wc-top"><span class="wc-name">Performance</span><span class="status status--partial">MVP</span></div><div class="wc-desc">Velocidade, Core Web Vitals e infraestrutura</div></div>
+      <div class="wri-card"><div class="wc-top"><span class="wc-name">UX</span><span class="status status--pending">Roadmap</span></div><div class="wc-desc">Experiência do usuário e usabilidade</div></div>
+      <div class="wri-card"><div class="wc-top"><span class="wc-name">Reputation</span><span class="status status--pending">Roadmap</span></div><div class="wc-desc">Avaliações, menções e reputação online</div></div>
+      <div class="wri-card"><div class="wc-top"><span class="wc-name">Social</span><span class="status status--pending">Roadmap</span></div><div class="wc-desc">Presença e engajamento em redes sociais</div></div>
+      <div class="wri-card"><div class="wc-top"><span class="wc-name">Local</span><span class="status status--pending">Roadmap</span></div><div class="wc-desc">Presença em mapas e diretórios locais</div></div>
+      <div class="wri-card wri-card--mvp"><div class="wc-top"><span class="wc-name">Security</span><span class="status status--partial">MVP</span></div><div class="wc-desc">HTTPS, headers e boas práticas de segurança</div></div>
+      <div class="wri-card"><div class="wc-top"><span class="wc-name">Conversion</span><span class="status status--pending">Roadmap</span></div><div class="wc-desc">Elementos que convertem visitantes em clientes</div></div>
+    </div>
+
+    <div id="s6" class="sec-head animate" style="--i:21"><span class="num">06</span><span class="title">Fluxo mínimo — já funciona hoje</span></div>
+    <p class="sec-sub animate" style="--i:22">Ponta a ponta, do cadastro ao score no dashboard — validado manualmente no commit inicial.</p>
+    <div class="pipeline animate" style="--i:23">
+      <div class="pipeline-step is-recessed"><div class="step-num">PASSO 1</div><div class="step-name">Login / Registro</div><div class="step-detail">JWT emitido pelo backend</div></div>
+      <div class="pipeline-step is-recessed"><div class="step-num">PASSO 2</div><div class="step-name">Empresa + Projeto</div><div class="step-detail">Cria Empresa e Projeto (domínio)</div></div>
+      <div class="pipeline-step is-recessed"><div class="step-num">PASSO 3</div><div class="step-name">Auditoria</div><div class="step-detail">MVP determinístico: 4 checks no domínio</div></div>
+      <div class="pipeline-step is-recessed"><div class="step-num">PASSO 4</div><div class="step-name">WriScore</div><div class="step-detail">Sistema calcula e grava a métrica</div></div>
+      <div class="pipeline-step is-recessed"><div class="step-num">PASSO 5</div><div class="step-name">Dashboard</div><div class="step-detail">Exibe o score e o checklist de checks</div></div>
+    </div>
+    <div class="pipeline-check animate" style="--i:24">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+      ponta a ponta confirmado manualmente, uma vez, no commit inicial
+    </div>
+
+    <div id="s7" class="sec-head animate" style="--i:25"><span class="num">07</span><span class="title">Perfis de usuário</span></div>
+    <div class="role-grid animate" style="--i:26">
+      <div class="role-card"><div class="r-name"><span class="dot"></span>Administrador</div><div class="r-desc">Controle total da plataforma</div></div>
+      <div class="role-card"><div class="r-name"><span class="dot"></span>Consultor</div><div class="r-desc">Atua em nome de uma ou mais empresas/agências</div></div>
+      <div class="role-card"><div class="r-name"><span class="dot"></span>Agência</div><div class="r-desc">Gerencia múltiplas empresas clientes</div></div>
+      <div class="role-card"><div class="r-name"><span class="dot"></span>Empresa</div><div class="r-desc">Dono do domínio/projeto analisado</div></div>
+      <div class="role-card"><div class="r-name"><span class="dot"></span>Cliente Final</div><div class="r-desc">Visão restrita, geralmente somente leitura</div></div>
+      <div class="role-card"><div class="r-name"><span class="dot"></span>Equipe</div><div class="r-desc">Membros internos com permissões específicas</div></div>
+      <div class="role-card role-card--ai"><div class="r-name"><span class="dot"></span>IA (Agente)</div><div class="r-desc">Atua autônoma ou assistidamente, dentro de limites definidos</div></div>
+    </div>
+    <div class="callout animate" style="--i:27">
+      <strong>Nota de implementação:</strong> hoje o Prisma modela apenas um papel simples (<code>CompanyMember.role = "owner"</code>) — a matriz completa de 7 perfis acima ainda é conceitual, não há RBAC granular no código.
+    </div>
+
+    <div id="s8" class="sec-head animate" style="--i:28"><span class="num">08</span><span class="title">Recomendações &amp; níveis de automação</span></div>
+    <p class="sec-sub animate" style="--i:29">A IA não apenas responde — ela classifica cada ação e declara até qual nível de automação está autorizada a agir.</p>
+    <div class="split-two animate" style="--i:30">
+      <div class="ve-card">
+        <div class="ve-card__label">Tipos de recomendação</div>
+        <div class="tag-scale">
+          <div class="tag-row"><span class="swatch" style="background:var(--rose)"></span><span class="label">Crítico</span></div>
+          <div class="tag-row"><span class="swatch" style="background:var(--orange)"></span><span class="label">Alta prioridade</span></div>
+          <div class="tag-row"><span class="swatch" style="background:var(--gold)"></span><span class="label">Média prioridade</span></div>
+          <div class="tag-row"><span class="swatch" style="background:var(--accent)"></span><span class="label">Baixa prioridade</span></div>
+          <div class="tag-row"><span class="swatch" style="background:var(--green)"></span><span class="label">Oportunidade</span></div>
+          <div class="tag-row"><span class="swatch" style="background:var(--teal)"></span><span class="label">Automatizável</span></div>
+          <div class="tag-row"><span class="swatch" style="background:var(--text-dim)"></span><span class="label">Monitoramento</span></div>
+        </div>
+      </div>
+      <div class="ve-card">
+        <div class="ve-card__label">Níveis de automação</div>
+        <div class="auto-scale">
+          <div class="auto-row"><span class="label">Manual</span><div class="bar-wrap"><div class="bar" style="width:20%"></div></div></div>
+          <div class="auto-row"><span class="label">Assistido</span><div class="bar-wrap"><div class="bar" style="width:40%"></div></div></div>
+          <div class="auto-row"><span class="label">Semi-automático</span><div class="bar-wrap"><div class="bar" style="width:60%"></div></div></div>
+          <div class="auto-row"><span class="label">Automático</span><div class="bar-wrap"><div class="bar" style="width:80%"></div></div></div>
+          <div class="auto-row"><span class="label">Autônomo</span><div class="bar-wrap"><div class="bar" style="width:100%"></div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="s9" class="sec-head animate" style="--i:31"><span class="num">09</span><span class="title">Decisões recentes</span></div>
+    <p class="sec-source animate" style="--i:32">Fonte: <code>docs/DECISIONS.md</code> — registro histórico completo, com data e motivo.</p>
+    <div class="decision-list animate" style="--i:33">
+      <div class="decision-item">
+        <div class="d-date">2026-07-17</div>
+        <div class="d-title">Escopo enxuto para o primeiro dia</div>
+        <div class="d-body">Priorizar rodar o sistema ponta a ponta (backend + frontend + banco + login + 1º cálculo do WRI) em vez de completar toda a documentação do Starter Kit Enterprise. ~15 documentos adicionais, Design System completo, Wizard com UI, Docker e CI/CD completo viram pendência no backlog.</div>
+      </div>
+      <div class="decision-item">
+        <div class="d-date">2026-07-17</div>
+        <div class="d-title">Banco de dados e cache gerenciados na nuvem</div>
+        <div class="d-body">Neon (Postgres) e Upstash (Redis), free tier, em vez de Docker local — Docker/Docker Desktop não estavam instalados e exigiriam habilitar WSL2/Hyper-V e reiniciar o Windows. Docker Compose fica pendente para quando for instalado.</div>
+      </div>
+      <div class="decision-item">
+        <div class="d-date">2026-07-17</div>
+        <div class="d-title">Stack bleeding edge confirmada</div>
+        <div class="d-body">Next.js 16 + React 19 mantidos conforme planejamento original, confirmados pelo usuário; Node 24 instalado é compatível. Monitorar possíveis incompatibilidades de bibliotecas de terceiros com React 19.</div>
+      </div>
+      <div class="decision-item">
+        <div class="d-date">2026-07-19</div>
+        <div class="d-title">Automação do roadmap sob demanda, não autônoma</div>
+        <div class="d-body">O ciclo "executar fase → verificar → atualizar" roda só sob demanda, manualmente. Sem cron/agendamento, sem instalar loops autônomos — decisão explícita do usuário, alinhada à Constituição regra 8 (automação reversível).</div>
+      </div>
+      <div class="decision-item">
+        <div class="d-date">2026-07-19</div>
+        <div class="d-title">Correção de rumo: revertida a generalização prematura</div>
+        <div class="d-body">Uma skill reutilizável de nível de usuário (<code>living-roadmap</code>) chegou a ser criada para "servir qualquer projeto futuro", mas foi removida — generalizar antes de validar o padrão num caso real contrariava a Constituição regra 9 (simplicidade). Este sistema volta a ser específico do WebKeeper Rank. A visão maior (gerador de projetos completo, com subagentes especializados, modo plan/ultraplan e loop de auto-repair) fica registrada como projeto futuro separado, fora deste repositório.</div>
+      </div>
+    </div>
+
+    <div id="s10" class="sec-head animate" style="--i:34"><span class="num">10</span><span class="title">Fora do escopo</span></div>
+    <p class="sec-sub animate" style="--i:35">O WRI se integra com estas categorias de ferramenta em vez de reimplementá-las.</p>
+    <div class="scope-grid animate" style="--i:36">
+      <span class="scope-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>CRM</span>
+      <span class="scope-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>ERP</span>
+      <span class="scope-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>Ferramenta de anúncios</span>
+      <span class="scope-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>Editor de sites</span>
+      <span class="scope-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>E-mail marketing</span>
+    </div>
+
+    <div class="footer animate" style="--i:37">
+      Última atualização: 2026-07-19 &middot; Fontes: docs/VISION.md, docs/PRODUCT.md, docs/MASTER_CHECKLIST.md,
+      docs/DECISIONS.md, docs/BACKLOG.md, docs/EXECUTION_LOG.md e inspeção do código-fonte (backend/, frontend/).<br>
+      Este arquivo é uma leitura visual dos documentos acima — os arquivos .md continuam sendo a fonte oficial do projeto
+      (Constituição do WRI, regra 10). Regenere este painel sempre que MASTER_CHECKLIST.md, DECISIONS.md ou BACKLOG.md
+      mudarem de forma relevante, ou quando uma funcionalidade significativa for entregue. Prompts executados devem ser
+      removidos ou ajustados só depois de verificados pelo subagente <code>roadmap-verifier</code> (ou <code>/verify</code> /
+      <code>/code-review</code>). Histórico completo de execuções: <code>docs/EXECUTION_LOG.md</code>. Este sistema é
+      específico deste projeto e roda sob demanda, manualmente — nunca em segundo plano sem acionamento.
+    </div>
+
+  </div><!-- /main -->
+</div><!-- /wrap -->
+
+<script>
+(function() {
+  var wrap = document.querySelector('.wrap');
+  var toggle = document.getElementById('tocToggle');
+  if (wrap && toggle) {
+    if (localStorage.getItem('wri-toc-collapsed') === '1') {
+      wrap.classList.add('toc-collapsed');
+    }
+    toggle.addEventListener('click', function() {
+      var collapsed = wrap.classList.toggle('toc-collapsed');
+      localStorage.setItem('wri-toc-collapsed', collapsed ? '1' : '0');
+    });
+  }
+})();
+
+(function() {
+  var toc = document.getElementById('toc');
+  var links = toc.querySelectorAll('a');
+  var sections = [];
+  links.forEach(function(link) {
+    var id = link.getAttribute('href').slice(1);
+    var el = document.getElementById(id);
+    if (el) sections.push({ id: id, el: el, link: link });
+  });
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        links.forEach(function(l) { l.classList.remove('active'); });
+        var match = sections.find(function(s) { return s.el === entry.target; });
+        if (match) {
+          match.link.classList.add('active');
+          if (window.innerWidth <= 1000) {
+            match.link.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+          }
+        }
+      }
+    });
+  }, { rootMargin: '-10% 0px -80% 0px' });
+  sections.forEach(function(s) { observer.observe(s.el); });
+  links.forEach(function(link) {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      var id = link.getAttribute('href').slice(1);
+      var el = document.getElementById(id);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        history.replaceState(null, '', '#' + id);
+      }
+    });
+  });
+})();
+
+(function() {
+  document.querySelectorAll('.copy-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var block = btn.parentElement.querySelector('.prompt-block');
+      if (!block) return;
+      var text = block.textContent;
+      var done = function() {
+        var original = btn.textContent;
+        btn.textContent = 'Copiado!';
+        btn.classList.add('is-copied');
+        setTimeout(function() {
+          btn.textContent = original === 'Copiado!' ? 'Copiar' : original;
+          btn.classList.remove('is-copied');
+        }, 1500);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done).catch(function() {
+          fallbackCopy(text);
+          done();
+        });
+      } else {
+        fallbackCopy(text);
+        done();
+      }
+    });
+  });
+
+  function fallbackCopy(text) {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); } catch (e) {}
+    document.body.removeChild(ta);
+  }
+})();
+</script>
+
+</body>
+</html>
