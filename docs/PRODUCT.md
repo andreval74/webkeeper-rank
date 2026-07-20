@@ -42,7 +42,7 @@ WRI
 ├── Conversion
 ```
 
-Cada categoria possui dezenas de métricas próprias. Na implementação inicial (hoje), calculamos um subconjunto mínimo e determinístico dentro de **Performance** e **Security** (ex.: uso de HTTPS, presença de meta tags essenciais) para validar o fluxo ponta a ponta. As demais categorias entram progressivamente.
+Cada categoria possui dezenas de métricas próprias. Hoje temos um motor de auditoria determinístico com 14 checks reais cobrindo três categorias: **Security** (7 checks — HTTPS, certificado SSL, CSP, HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy), **Performance** (2 checks — disponibilidade, tempo de resposta) e **SEO** (5 checks — title, meta description, robots.txt, sitemap.xml, dados estruturados JSON-LD). Ver `backend/src/modules/wri/wri-audit.util.ts` e `docs/DECISIONS.md` (2026-07-20). As demais nove categorias ainda não foram iniciadas.
 
 ## Tipos de recomendação
 
@@ -77,10 +77,10 @@ Cada funcionalidade deve declarar explicitamente até qual nível de automação
 ## Decisões
 
 - 2026-07-17: Escopo inicial do WRI restrito a métricas determinísticas (sem LLM) para viabilizar entrega no primeiro dia. Ver `docs/DECISIONS.md`.
+- 2026-07-20: Fórmula de ponderação entre categorias definida — pesos fixos por categoria (Security 30 / Performance 30 / SEO 40, soma 100), divididos igualmente entre os checks de cada categoria. Ver `docs/DECISIONS.md`.
 
 ## Pendências
 
-- Detalhar fórmula de ponderação entre categorias do WRI.
 - Definir `RULES.md` (regras de negócio), `AI_AGENTS.md` e `UX_UI.md`.
 
 ## Roadmap

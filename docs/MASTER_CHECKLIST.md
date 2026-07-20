@@ -7,6 +7,7 @@ Checklist do que existe e do que falta no WebKeeper Rank. O Claude Code deve con
 - [x] Estrutura do monorepo
 - [x] Documentação essencial (VISION, PRODUCT, ARCHITECTURE, STACK, CLAUDE.md)
 - [ ] Documentação completa (MODULES, RULES, AI_AGENTS, UX_UI, DESIGN_SYSTEM, DATABASE, API, SECURITY, NON_FUNCTIONAL, OBSERVABILITY, DEPLOY, TESTING, CHANGELOG)
+- [x] Testes automatizados (backend: Jest + `node:test` · frontend: Vitest + Testing Library) — cobertura de caminhos críticos (auth, company, wri no backend; login e dashboard no frontend)
 - [ ] Docker Compose / containerização (bloqueado: Docker não instalado na máquina atual)
 - [ ] CI/CD completo (GitHub Actions: lint, test, build, deploy)
 - [ ] Dependabot, CODEOWNERS
@@ -17,7 +18,7 @@ Checklist do que existe e do que falta no WebKeeper Rank. O Claude Code deve con
 - [x] Prisma schema mínimo (User, Company, Project, Metric, WriScore)
 - [x] Módulo de autenticação (JWT) básico
 - [x] Módulo de empresa (Company) básico
-- [x] Primeiro cálculo determinístico do WRI Score
+- [x] Motor de auditoria determinística ampliado (14 checks: Security 7 / Performance 2 / SEO 5)
 - [ ] Módulos completos: SEO, GEO, AEO, Brand, Authority, Performance, UX, Reputation, Social, Local, Security, Conversion
 - [ ] Filas assíncronas (BullMQ + Redis/Upstash)
 - [ ] Multiempresa/permissões avançadas por perfil de usuário

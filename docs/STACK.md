@@ -25,6 +25,12 @@ Fixar a stack tecnológica oficial do WebKeeper Rank para evitar decisões incon
 - Redis (Upstash, gerenciado) — introduzido quando necessário para cache/filas
 - BullMQ — introduzido junto com Redis
 
+## Testes
+
+- Backend: Jest + ts-jest, para testes unitários de serviços NestJS (mock de `PrismaService`/`JwtService`) — coexiste com `node:test` nativo (zero dependência) para a lógica pura de `wri-audit.util.ts`.
+- Frontend: Vitest + @testing-library/react, para testes unitários de páginas (mock de `apiFetch`, `next/navigation`, Zustand store).
+- Escopo hoje: apenas testes unitários (sem e2e, sem Postgres/Neon real, sem rede real) — ver `docs/DECISIONS.md`.
+
 ## IA (fase futura)
 
 - OpenAI, Claude, Gemini, Groq — integrados via camada de abstração própria (nenhum módulo de negócio chama SDKs de IA diretamente).
@@ -42,6 +48,7 @@ Fixar a stack tecnológica oficial do WebKeeper Rank para evitar decisões incon
 ## Decisões
 
 - 2026-07-17: Stack definida conforme conversa de planejamento do produto.
+- 2026-07-20: frameworks de teste definidos (Jest no backend para serviços, Vitest no frontend) — ver `docs/DECISIONS.md`.
 
 ## Pendências
 

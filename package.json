@@ -11,7 +11,10 @@
   "scripts": {
     "dev:backend": "npm run start:dev --workspace=backend",
     "dev:frontend": "npm run dev --workspace=frontend",
-    "check-env": "tsx scripts/check-env.ts"
+    "check-env": "tsx scripts/check-env.ts",
+    "test:backend": "npm run test:all --workspace=backend",
+    "test:frontend": "npm test --workspace=frontend",
+    "test": "npm run test:backend && npm run test:frontend"
   },
   "engines": {
     "node": ">=20"

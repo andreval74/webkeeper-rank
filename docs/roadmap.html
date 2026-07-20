@@ -459,8 +459,8 @@
     <p class="sec-source animate" style="--i:6">Fonte: <code>docs/MASTER_CHECKLIST.md</code> cruzado com o código real (backend, frontend, git log).</p>
 
     <div class="kpi-row animate" style="--i:7">
-      <div class="kpi-tile kpi-tile--done"><div class="kpi-value">9</div><div class="kpi-label">Concluído</div></div>
-      <div class="kpi-tile kpi-tile--partial"><div class="kpi-value">1</div><div class="kpi-label">Parcial</div></div>
+      <div class="kpi-tile kpi-tile--done"><div class="kpi-value">10</div><div class="kpi-label">Concluído</div></div>
+      <div class="kpi-tile kpi-tile--partial"><div class="kpi-value">0</div><div class="kpi-label">Parcial</div></div>
       <div class="kpi-tile kpi-tile--pending"><div class="kpi-value">11</div><div class="kpi-label">Pendente</div></div>
       <div class="kpi-tile kpi-tile--blocked"><div class="kpi-value">1</div><div class="kpi-label">Bloqueado</div></div>
     </div>
@@ -484,7 +484,7 @@
         <div class="status-item"><div class="si-label">Prisma schema<span class="si-note">User, Company, CompanyMember, Project, Metric, WriScore</span></div><span class="status status--done">Concluído</span></div>
         <div class="status-item"><div class="si-label">Auth JWT (registro/login)</div><span class="status status--done">Concluído</span></div>
         <div class="status-item"><div class="si-label">Módulo Company (empresa + projeto)</div><span class="status status--done">Concluído</span></div>
-        <div class="status-item"><div class="si-label">Auditoria WRI determinística<span class="si-note">MVP: 4 checks (HTTPS, status OK, title, meta description)</span></div><span class="status status--partial">Parcial (MVP)</span></div>
+        <div class="status-item"><div class="si-label">Auditoria WRI determinística<span class="si-note">14 checks: Security 7 / Performance 2 / SEO 5</span></div><span class="status status--done">Concluído</span></div>
         <div class="status-item"><div class="si-label">Módulos das 12 categorias do WRI</div><span class="status status--pending">Pendente</span></div>
         <div class="status-item"><div class="si-label">Filas assíncronas (BullMQ + Redis)</div><span class="status status--pending">Pendente</span></div>
         <div class="status-item"><div class="si-label">RBAC avançado / multiempresa</div><span class="status status--pending">Pendente</span></div>
@@ -531,17 +531,6 @@
 
       <div class="prompt-list">
         <div class="prompt-group-label">Curto prazo</div>
-
-        <details class="prompt-card prompt-card--short">
-          <summary><span class="pill pill--short">Curto prazo</span><span class="summary-text">Aprofundar a auditoria determinística</span></summary>
-          <div class="prompt-body">
-            <p class="prompt-goal">Ampliar <code>backend/src/modules/wri/wri-audit.util.ts</code> para checks reais além dos 4 atuais.</p>
-            <div class="prompt-block-wrap">
-              <button class="copy-btn" type="button">Copiar</button>
-              <div class="prompt-block">Leia docs/PRODUCT.md (seção "Níveis do WRI") e backend/src/modules/wri/wri-audit.util.ts. Hoje a auditoria determinística roda só 4 checks (HTTPS, status HTTP OK, tag &lt;title&gt;, meta description). Amplie o motor para cobrir mais sinais reais dentro de Security, Performance e SEO — por exemplo: headers de segurança (CSP, HSTS, X-Frame-Options), validade do certificado SSL, presença de robots.txt e sitemap.xml, tempo de resposta do servidor, dados estruturados (JSON-LD). Mantenha o cálculo 100% determinístico, sem chamadas a LLM (docs/DECISIONS.md, decisão "Escopo enxuto"). Cada novo check deve virar uma Metric rastreável (Constituição, regra 6). Ao final, rode a auditoria contra um domínio real para confirmar que o score muda de forma coerente, e atualize docs/MASTER_CHECKLIST.md. Se qualquer decisão não estiver clara (ex. quais headers priorizar, qual biblioteca usar para parsing), pergunte ao usuário antes de prosseguir — não assuma.</div>
-            </div>
-          </div>
-        </details>
 
         <details class="prompt-card prompt-card--short">
           <summary><span class="pill pill--short">Curto prazo</span><span class="summary-text">Adicionar testes automatizados</span></summary>
@@ -692,9 +681,9 @@
 
     <div id="s5" class="sec-head animate" style="--i:18"><span class="num">05</span><span class="title">Índice WRI — 12 níveis</span></div>
     <p class="sec-sub animate" style="--i:19">
-      Cada categoria possui dezenas de métricas próprias. Hoje, <strong style="color:var(--text)">Security</strong>,
-      <strong style="color:var(--text)">Performance</strong> e <strong style="color:var(--text)">SEO</strong> têm cobertura
-      mínima (1–2 checks cada, dentro do MVP de auditoria). As demais nove categorias ainda não foram iniciadas.
+      Cada categoria possui dezenas de métricas próprias. Hoje, <strong style="color:var(--text)">Security</strong> (7 checks),
+      <strong style="color:var(--text)">Performance</strong> (2 checks) e <strong style="color:var(--text)">SEO</strong> (5 checks) têm um
+      motor de auditoria determinístico funcional — 14 checks reais no total. As demais nove categorias ainda não foram iniciadas.
     </p>
     <div class="wri-grid animate" style="--i:20">
       <div class="wri-card wri-card--mvp"><div class="wc-top"><span class="wc-name">SEO</span><span class="status status--partial">MVP</span></div><div class="wc-desc">Visibilidade em mecanismos de busca tradicionais</div></div>
@@ -716,7 +705,7 @@
     <div class="pipeline animate" style="--i:23">
       <div class="pipeline-step is-recessed"><div class="step-num">PASSO 1</div><div class="step-name">Login / Registro</div><div class="step-detail">JWT emitido pelo backend</div></div>
       <div class="pipeline-step is-recessed"><div class="step-num">PASSO 2</div><div class="step-name">Empresa + Projeto</div><div class="step-detail">Cria Empresa e Projeto (domínio)</div></div>
-      <div class="pipeline-step is-recessed"><div class="step-num">PASSO 3</div><div class="step-name">Auditoria</div><div class="step-detail">MVP determinístico: 4 checks no domínio</div></div>
+      <div class="pipeline-step is-recessed"><div class="step-num">PASSO 3</div><div class="step-name">Auditoria</div><div class="step-detail">Motor determinístico: 14 checks no domínio</div></div>
       <div class="pipeline-step is-recessed"><div class="step-num">PASSO 4</div><div class="step-name">WriScore</div><div class="step-detail">Sistema calcula e grava a métrica</div></div>
       <div class="pipeline-step is-recessed"><div class="step-num">PASSO 5</div><div class="step-name">Dashboard</div><div class="step-detail">Exibe o score e o checklist de checks</div></div>
     </div>
@@ -793,6 +782,11 @@
         <div class="d-date">2026-07-19</div>
         <div class="d-title">Correção de rumo: revertida a generalização prematura</div>
         <div class="d-body">Uma skill reutilizável de nível de usuário (<code>living-roadmap</code>) chegou a ser criada para "servir qualquer projeto futuro", mas foi removida — generalizar antes de validar o padrão num caso real contrariava a Constituição regra 9 (simplicidade). Este sistema volta a ser específico do WebKeeper Rank. A visão maior (gerador de projetos completo, com subagentes especializados, modo plan/ultraplan e loop de auto-repair) fica registrada como projeto futuro separado, fora deste repositório.</div>
+      </div>
+      <div class="decision-item">
+        <div class="d-date">2026-07-20</div>
+        <div class="d-title">Motor de auditoria WRI ampliado para 14 checks determinísticos</div>
+        <div class="d-body">Expandido de 4 para 14 checks reais (Security 7, Performance 2, SEO 5), pesos por categoria mantidos (30/30/40) divididos igualmente entre os checks, só regex para parsing, sem chamadas a LLM. Testes unitários leves (<code>node:test</code>, nativo, zero dependência) cobrindo a lógica pura nova. Fecha a pendência da fórmula de ponderação em <code>docs/PRODUCT.md</code>.</div>
       </div>
     </div>
 
