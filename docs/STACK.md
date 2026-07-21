@@ -24,6 +24,7 @@ Fixar a stack tecnológica oficial do WebKeeper Rank para evitar decisões incon
 - PostgreSQL (Neon, gerenciado)
 - Redis (Upstash, gerenciado) — introduzido quando necessário para cache/filas
 - BullMQ — introduzido junto com Redis
+- @nestjs/throttler — rate limiting para rotas públicas (ex: checagem sem login)
 
 ## Testes
 
@@ -49,6 +50,7 @@ Fixar a stack tecnológica oficial do WebKeeper Rank para evitar decisões incon
 
 - 2026-07-17: Stack definida conforme conversa de planejamento do produto.
 - 2026-07-20: frameworks de teste definidos (Jest no backend para serviços, Vitest no frontend) — ver `docs/DECISIONS.md`.
+- 2026-07-20: @nestjs/throttler adicionado para rate limiting da rota pública de checagem — ver `docs/DECISIONS.md`.
 
 ## Pendências
 

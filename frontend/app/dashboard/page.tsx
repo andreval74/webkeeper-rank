@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { apiFetch } from '@/lib/api';
 import { useAuthStore } from '@/lib/auth-store';
+import { WriScoreBreakdown } from '@/components/wri-score-breakdown';
 
 interface Project {
   id: string;
@@ -181,19 +182,7 @@ export default function DashboardPage() {
           </div>
 
           {scoreQuery.data ? (
-            <div>
-              <p className="mb-3 text-4xl font-bold text-[var(--wk-primary)]">
-                {scoreQuery.data.score}
-                <span className="text-base font-normal text-white/50">/100</span>
-              </p>
-              <ul className="space-y-1 text-sm text-white/70">
-                {scoreQuery.data.breakdown?.map((check) => (
-                  <li key={`${check.category}-${check.key}`}>
-                    [{check.category}] {check.key}: {check.value ? '✅' : '❌'}
-                  </li>
-                ))}
-              </ul>
-            </div>
+            <WriScoreBreakdown score={scoreQuery.data.score} checks={scoreQuery.data.breakdown} />
           ) : (
             <p className="text-sm text-white/60">Nenhuma auditoria rodada ainda.</p>
           )}

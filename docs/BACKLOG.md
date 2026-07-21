@@ -27,3 +27,7 @@ Itens planejados que ficaram fora do escopo do primeiro dia. Ver também `docs/M
 ## Automação / Tooling
 
 - Gerador automático de `docs/roadmap.html` a partir dos `.md` (MASTER_CHECKLIST, DECISIONS, BACKLOG, EXECUTION_LOG) — considerado em 2026-07-19 ao montar o sistema de roadmap vivo, mas adiado deliberadamente para não expandir o escopo daquela entrega sem alinhamento prévio (Constituição, regra 9 — simplicidade; regra do CLAUDE.md sobre propor melhorias registrando-as no backlog). Hoje o dashboard é regenerado por uma sessão de IA seguindo a convenção documentada em `CLAUDE.md`; um script determinístico (ex. `scripts/generate-roadmap.ts`) tornaria isso mais robusto e menos dependente de reescrever HTML à mão a cada atualização.
+
+## Segurança
+
+- Proteção completa contra SSRF na checagem pública (`POST /api/public/wri-check`): hoje só valida o hostname informado (regex básica); falta validar o IP para o qual o hostname resolve antes de chamar `fetch`/`tls.connect`, para cobrir DNS rebinding e hostnames que resolvem para endereços internos (RFC 1918, loopback, link-local). Ver `docs/DECISIONS.md`, entrada de 2026-07-20.

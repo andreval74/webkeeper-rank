@@ -19,6 +19,7 @@ Checklist do que existe e do que falta no WebKeeper Rank. O Claude Code deve con
 - [x] Módulo de autenticação (JWT) básico
 - [x] Módulo de empresa (Company) básico
 - [x] Motor de auditoria determinística ampliado (14 checks: Security 7 / Performance 2 / SEO 5)
+- [x] Rota pública de checagem (sem login), com rate limiting e validação de hostname
 - [ ] Módulos completos: SEO, GEO, AEO, Brand, Authority, Performance, UX, Reputation, Social, Local, Security, Conversion
 - [ ] Filas assíncronas (BullMQ + Redis/Upstash)
 - [ ] Multiempresa/permissões avançadas por perfil de usuário
@@ -28,6 +29,7 @@ Checklist do que existe e do que falta no WebKeeper Rank. O Claude Code deve con
 - [x] Bootstrap Next.js 16 + React 19
 - [x] Tela de login
 - [x] Dashboard inicial exibindo o WRI Score
+- [x] Home pública de checagem de site (sem login), com CTA para criar conta
 - [ ] Design System completo (paleta oficial, tipografia, componentes, dark theme, motion)
 - [ ] Wizard de configuração com UI administrativa
 
