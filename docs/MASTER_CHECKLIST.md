@@ -9,7 +9,8 @@ Checklist do que existe e do que falta no WebKeeper Rank. O Claude Code deve con
 - [ ] Documentação completa (MODULES, RULES, AI_AGENTS, UX_UI, DESIGN_SYSTEM, DATABASE, API, SECURITY, NON_FUNCTIONAL, OBSERVABILITY, DEPLOY, TESTING, CHANGELOG)
 - [x] Testes automatizados (backend: Jest + `node:test` · frontend: Vitest + Testing Library) — cobertura de caminhos críticos (auth, company, wri no backend; login e dashboard no frontend)
 - [ ] Docker Compose / containerização (bloqueado: Docker não instalado na máquina atual)
-- [ ] CI/CD completo (GitHub Actions: lint, test, build, deploy)
+- [x] CI/CD validação (GitHub Actions: lint, test, build, sem deploy)
+- [ ] CI/CD completo com deploy
 - [ ] Dependabot, CODEOWNERS
 
 ## Backend
