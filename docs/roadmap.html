@@ -459,9 +459,9 @@
     <p class="sec-source animate" style="--i:6">Fonte: <code>docs/MASTER_CHECKLIST.md</code> cruzado com o código real (backend, frontend, git log).</p>
 
     <div class="kpi-row animate" style="--i:7">
-      <div class="kpi-tile kpi-tile--done"><div class="kpi-value">13</div><div class="kpi-label">Concluído</div></div>
+      <div class="kpi-tile kpi-tile--done"><div class="kpi-value">14</div><div class="kpi-label">Concluído</div></div>
       <div class="kpi-tile kpi-tile--partial"><div class="kpi-value">0</div><div class="kpi-label">Parcial</div></div>
-      <div class="kpi-tile kpi-tile--pending"><div class="kpi-value">8</div><div class="kpi-label">Pendente</div></div>
+      <div class="kpi-tile kpi-tile--pending"><div class="kpi-value">7</div><div class="kpi-label">Pendente</div></div>
       <div class="kpi-tile kpi-tile--blocked"><div class="kpi-value">1</div><div class="kpi-label">Bloqueado</div></div>
     </div>
 
@@ -469,12 +469,13 @@
 
       <div class="ve-card area-card">
         <div class="area-title">Infraestrutura</div>
-        <div class="area-count">2 concluídos · 3 pendentes</div>
+        <div class="area-count">3 concluídos · 2 pendentes</div>
         <div class="status-item"><div class="si-label">Monorepo (npm workspaces)</div><span class="status status--done">Concluído</span></div>
         <div class="status-item"><div class="si-label">Docs essenciais<span class="si-note">VISION, PRODUCT, ARCHITECTURE, STACK, CLAUDE.md</span></div><span class="status status--done">Concluído</span></div>
         <div class="status-item"><div class="si-label">Docs completos<span class="si-note">12 arquivos: MODULES, RULES, AI_AGENTS, DESIGN_SYSTEM, API, SECURITY...</span></div><span class="status status--pending">Pendente</span></div>
         <div class="status-item"><div class="si-label">Docker Compose<span class="si-note">Docker não instalado na máquina de dev</span></div><span class="status status--blocked">Bloqueado</span></div>
-        <div class="status-item"><div class="si-label">CI/CD, Dependabot, CODEOWNERS</div><span class="status status--pending">Pendente</span></div>
+        <div class="status-item"><div class="si-label">CI/CD (lint + build + test)<span class="si-note">GitHub Actions: npm ci → lint → build → test</span></div><span class="status status--done">Concluído</span></div>
+        <div class="status-item"><div class="si-label">Dependabot, CODEOWNERS</div><span class="status status--pending">Pendente</span></div>
       </div>
 
       <div class="ve-card area-card">
@@ -504,16 +505,16 @@
 
       <div class="ve-card area-card">
         <div class="area-title">Qualidade &amp; operação</div>
-        <div class="area-count">1 concluído · 3 pendentes</div>
+        <div class="area-count">2 concluídos · 2 pendentes</div>
         <div class="status-item"><div class="si-label">Testes automatizados<span class="si-note">backend: Jest (20) + node:test (7) · frontend: Vitest (8) · 35/35 passando</span></div><span class="status status--done">Concluído</span></div>
-        <div class="status-item"><div class="si-label">CI/CD (lint + build + test)</div><span class="status status--pending">Pendente</span></div>
+        <div class="status-item"><div class="si-label">CI/CD (lint + build + test)<span class="si-note">GitHub Actions: .github/workflows/ci.yml, Node 20 LTS</span></div><span class="status status--done">Concluído</span></div>
         <div class="status-item"><div class="si-label">Observabilidade<span class="si-note">Grafana, Prometheus, Sentry</span></div><span class="status status--pending">Pendente</span></div>
         <div class="status-item"><div class="si-label">Billing</div><span class="status status--pending">Pendente</span></div>
       </div>
 
     </div>
-    <div class="callout callout--rose animate" style="--i:9">
-      <strong>Maior risco atual:</strong> nenhum CI configurado — os 35 testes automatizados (backend + frontend) só rodam quando alguém lembra de rodar localmente, nada bloqueia um PR com testes quebrando. O fluxo ponta a ponta (checagem pública → registro → empresa → projeto → auditoria → score) segue validado manualmente na última sessão.
+    <div class="callout callout--green animate" style="--i:9">
+      <strong>Status atual:</strong> CI pipeline ativo e validado (GitHub Actions em main). Todos os 35 testes (backend Jest+node:test, frontend Vitest) rodam automaticamente em push/PR; lint (ESLint 9 flat config) passa em ambos workspaces; build (NestJS + Next.js Turbopack) verde. Próximo risco: deploy e observabilidade não existem ainda.
     </div>
 
     <div id="s3" class="sec-head animate" style="--i:10"><span class="num">03</span><span class="title">Próximos passos</span></div>
@@ -533,17 +534,7 @@
 
       <div class="prompt-list">
         <div class="prompt-group-label">Curto prazo</div>
-
-        <details class="prompt-card prompt-card--short">
-          <summary><span class="pill pill--short">Curto prazo</span><span class="summary-text">Configurar CI básico no GitHub Actions</span></summary>
-          <div class="prompt-body">
-            <p class="prompt-goal">Lint, build e test automáticos em todo PR — hoje não existe nenhum workflow.</p>
-            <div class="prompt-block-wrap">
-              <button class="copy-btn" type="button">Copiar</button>
-              <div class="prompt-block">Crie .github/workflows/ci.yml rodando em push e pull_request para main: instalar dependências (npm workspaces), lint do backend e do frontend, build de ambos, e os testes automatizados (npm test na raiz — já cobre backend Jest + node:test e frontend Vitest, 24 testes ao todo). Sem deploy ainda — só validação. Atenção: o lint (npm run lint no backend e no frontend) está quebrado hoje no repositório, de forma pré-existente — investigue e corrija isso antes de adicionar o step de lint ao workflow, ou o CI vai falhar em toda PR desde o primeiro dia. Depois de criar o workflow, revise a sintaxe (actionlint ou leitura manual) e, se alguma escolha relevante for feita (ex. versão do Node no runner), registre em docs/DECISIONS.md. Se qualquer decisão não estiver clara, pergunte ao usuário antes de prosseguir — não assuma.</div>
-            </div>
-          </div>
-        </details>
+        <p style="font-size:13.5px;color:var(--text-dim);padding:10px 0;border-top:1px solid var(--border)">Nenhum prompt pendente — CI básico concluído em 2026-07-21. Próximas fases: Design System, IA, módulos WRI adicionais.</p>
       </div>
 
       <div class="prompt-list">
@@ -790,6 +781,11 @@
         <div class="d-title">Checagem pública sem login: a nova porta de entrada do WRI</div>
         <div class="d-body">Home (/) redesenhada para checar domínio sem login, usando POST /api/public/wri-check — novo endpoint no backend com rate limiting (@nestjs/throttler, 5 req/min/IP) e validação de hostname público (rejeita localhost, IPs literais, domínios sem TLD). Frontend ganha componente reutilizável WriScoreBreakdown, extraído do dashboard. Fecha a pendência de "checagem público" registrada em docs/DECISIONS.md, e as fases correspondentes de docs/superpowers/plans/ e /specs/. SSRF completo (validar IP resolvido) fica como pendência em docs/BACKLOG.md.</div>
       </div>
+      <div class="decision-item">
+        <div class="d-date">2026-07-21</div>
+        <div class="d-title">Lint configurado (ESLint 9 flat config) e CI Pipeline com GitHub Actions</div>
+        <div class="d-body">Backend (ESLint 9 + typescript-eslint 8) e frontend (ESLint 9 + eslint-config-next) — lint estava quebrado pré-existentemente (dependências não instaladas). Criado <code>.github/workflows/ci.yml</code>: gatilhos em push/pull_request para main, Node 20 LTS, steps de lint (ambos) → build (ambos) → test (27 testes: Jest+node:test backend, Vitest frontend). Sem deploy (fora de escopo). Decisões confirmadas: Node 20 LTS (alinhado ao <code>engines.node: ">=20"</code> do package.json raiz), ESLint idiomático por framework (sem Prettier, sem generalização desnecessária). Fecha "CI/CD validação" em <code>docs/MASTER_CHECKLIST.md</code>. Próxima fase: deploy e observabilidade.</div>
+      </div>
     </div>
 
     <div id="s10" class="sec-head animate" style="--i:34"><span class="num">10</span><span class="title">Fora do escopo</span></div>
@@ -803,7 +799,7 @@
     </div>
 
     <div class="footer animate" style="--i:37">
-      Última atualização: 2026-07-20 &middot; Fontes: docs/VISION.md, docs/PRODUCT.md, docs/MASTER_CHECKLIST.md,
+      Última atualização: 2026-07-21 &middot; Fontes: docs/VISION.md, docs/PRODUCT.md, docs/MASTER_CHECKLIST.md,
       docs/DECISIONS.md, docs/BACKLOG.md, docs/EXECUTION_LOG.md e inspeção do código-fonte (backend/, frontend/).<br>
       Este arquivo é uma leitura visual dos documentos acima — os arquivos .md continuam sendo a fonte oficial do projeto
       (Constituição do WRI, regra 10). Regenere este painel sempre que MASTER_CHECKLIST.md, DECISIONS.md ou BACKLOG.md
