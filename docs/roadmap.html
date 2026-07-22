@@ -459,9 +459,9 @@
     <p class="sec-source animate" style="--i:6">Fonte: <code>docs/MASTER_CHECKLIST.md</code> cruzado com o código real (backend, frontend, git log).</p>
 
     <div class="kpi-row animate" style="--i:7">
-      <div class="kpi-tile kpi-tile--done"><div class="kpi-value">14</div><div class="kpi-label">Concluído</div></div>
+      <div class="kpi-tile kpi-tile--done"><div class="kpi-value">15</div><div class="kpi-label">Concluído</div></div>
       <div class="kpi-tile kpi-tile--partial"><div class="kpi-value">0</div><div class="kpi-label">Parcial</div></div>
-      <div class="kpi-tile kpi-tile--pending"><div class="kpi-value">7</div><div class="kpi-label">Pendente</div></div>
+      <div class="kpi-tile kpi-tile--pending"><div class="kpi-value">6</div><div class="kpi-label">Pendente</div></div>
       <div class="kpi-tile kpi-tile--blocked"><div class="kpi-value">1</div><div class="kpi-label">Bloqueado</div></div>
     </div>
 
@@ -480,16 +480,15 @@
 
       <div class="ve-card area-card">
         <div class="area-title">Backend</div>
-        <div class="area-count">5 concluídos · 3 pendentes</div>
+        <div class="area-count">6 concluídos · 2 pendentes</div>
         <div class="status-item"><div class="si-label">Bootstrap NestJS + Fastify</div><span class="status status--done">Concluído</span></div>
-        <div class="status-item"><div class="si-label">Prisma schema<span class="si-note">User, Company, CompanyMember, Project, Metric, WriScore</span></div><span class="status status--done">Concluído</span></div>
+        <div class="status-item"><div class="si-label">Prisma schema<span class="si-note">User, Company, CompanyMember, Project, Metric, CategoryScore, GeoScore</span></div><span class="status status--done">Concluído</span></div>
         <div class="status-item"><div class="si-label">Auth JWT (registro/login)</div><span class="status status--done">Concluído</span></div>
         <div class="status-item"><div class="si-label">Módulo Company (empresa + projeto)</div><span class="status status--done">Concluído</span></div>
-        <div class="status-item"><div class="si-label">Auditoria WRI determinística<span class="si-note">14 checks: Security 7 / Performance 2 / SEO 5</span></div><span class="status status--done">Concluído</span></div>
-        <div class="status-item"><div class="si-label">Rota pública de checagem<span class="si-note">POST /api/public/wri-check, rate limiting, validação de hostname</span></div><span class="status status--done">Concluído</span></div>
-        <div class="status-item"><div class="si-label">Módulos das 12 categorias do WRI</div><span class="status status--pending">Pendente</span></div>
-        <div class="status-item"><div class="si-label">Filas assíncronas (BullMQ + Redis)</div><span class="status status--pending">Pendente</span></div>
-        <div class="status-item"><div class="si-label">RBAC avançado / multiempresa</div><span class="status status--pending">Pendente</span></div>
+        <div class="status-item"><div class="si-label">WRI + GEO módulos<span class="si-note">WRI: 14 checks (Security 7 / Performance 2 / SEO 5) · GEO: 8 checks (Knowledge Graph, AI Overview, Schema.org, OG, entity, KG eligible, AI traffic, freshness)</span></div><span class="status status--done">Concluído</span></div>
+        <div class="status-item"><div class="si-label">Rotas públicas de checagem<span class="si-note">POST /public/wri-check, POST /public/geo-check, rate limiting, validação de hostname</span></div><span class="status status--done">Concluído</span></div>
+        <div class="status-item"><div class="si-label">Módulos restantes (AEO, Brand, Authority, UX, Reputation, Social, Local, Conversion)</div><span class="status status--pending">Pendente</span></div>
+        <div class="status-item"><div class="si-label">Filas assíncronas + RBAC avançado / multiempresa</div><span class="status status--pending">Pendente</span></div>
       </div>
 
       <div class="ve-card area-card">
@@ -514,7 +513,7 @@
 
     </div>
     <div class="callout callout--green animate" style="--i:9">
-      <strong>Status atual:</strong> CI pipeline ativo e validado (GitHub Actions em main). Todos os 35 testes (backend Jest+node:test, frontend Vitest) rodam automaticamente em push/PR; lint (ESLint 9 flat config) passa em ambos workspaces; build (NestJS + Next.js Turbopack) verde. Próximo risco: deploy e observabilidade não existem ainda.
+      <strong>Status atual:</strong> Dois módulos WRI completos (WRI base + GEO), CI pipeline ativo, testes verdes (41 total: 24 Jest + 17 node:test). Padrão replicável pronto para 8 categorias restantes. Próximo: AEO (usa template GEO), depois Design System, IA explicativa, integrações e billing.
     </div>
 
     <div id="s3" class="sec-head animate" style="--i:10"><span class="num">03</span><span class="title">Próximos passos</span></div>
@@ -541,12 +540,12 @@
         <div class="prompt-group-label">Médio prazo</div>
 
         <details class="prompt-card prompt-card--mid">
-          <summary><span class="pill pill--mid">Médio prazo</span><span class="summary-text">Completar os módulos das demais categorias do WRI</span></summary>
+          <summary><span class="pill pill--mid">Médio prazo</span><span class="summary-text">Implementar AEO (próxima categoria, usar padrão GEO)</span></summary>
           <div class="prompt-body">
-            <p class="prompt-goal">9 categorias pendentes (GEO, AEO, Brand, Authority, UX, Reputation, Social, Local, Conversion) — grande demais para um prompt só, por isso este pede um plano.</p>
+            <p class="prompt-goal">8 categorias restantes (AEO, Brand, Authority, UX, Reputation, Social, Local, Conversion) após GEO — cada uma segue padrão idêntico, variando apenas nos checks específicos.</p>
             <div class="prompt-block-wrap">
               <button class="copy-btn" type="button">Copiar</button>
-              <div class="prompt-block">Rode /make-plan pedindo: "Planeje a implementação do módulo GEO (Generative Engine Optimization) como o próximo módulo de auditoria do WRI, replicando o padrão do módulo wri existente em backend/src/modules/wri (schema Prisma, serviço de auditoria, endpoint, persistência em Metric/WriScore). O plano deve deixar explícito como esse padrão se repete para as outras 8 categorias pendentes (AEO, Brand, Authority, UX, Reputation, Social, Local, Conversion), para que cada uma vire uma fase separada." Se qualquer decisão não estiver clara durante o planejamento ou a execução, pergunte ao usuário antes de prosseguir — não assuma.</div>
+              <div class="prompt-block">Implemente o módulo AEO (Answer Engine Optimization) replicando exatamente o padrão GEO em backend/src/modules/geo/ (você já completou GEO e tem o template pronto). Mudanças necessárias: (1) renomear classes Geo* → Aeo*, rotas /geo → /aeo, category: 'GEO' → 'AEO'; (2) criar novo model AeoScore no Prisma (cópia de GeoScore); (3) definir 8 checks AEO específicos para motores de resposta (ex: snippet optimization, answer box eligibility, featured snippet prep, table/list structure, inline code examples, definition/explanation clarity, FAQ schema, passage relevance); (4) mesmo algoritmo de scoring (100 pts distribuídos igualmente). Schema migration, service, controllers (authed + public), util, testes Jest+node:test, README.md. Registre no app.module.ts. Se qualquer dúvida de check specific, pergunte antes de prosseguir.</div>
             </div>
           </div>
         </details>
@@ -783,6 +782,11 @@
       </div>
       <div class="decision-item">
         <div class="d-date">2026-07-21</div>
+        <div class="d-title">Módulo GEO implementado com padrão replicável para 8 categorias restantes</div>
+        <div class="d-body">GEO (Generative Engine Optimization) implementado como segunda categoria WRI completa. Padrão idêntico ao WRI: schema Prisma (GeoScore), serviço com transação atômica Metric+GeoScore, controllers autenticado + público, util com 8 checks binários (Knowledge Graph, AI Overview, Schema.org, Open Graph, entity tags, KG eligible, AI traffic signals, content freshness), testes Jest+node:test. Score 0-100 com pesos dinâmicos (100 pts ÷ 8 checks = 12.5 cada). Este padrão é agora template único para AEO, Brand, Authority, UX, Reputation, Social, Local, Conversion — cada uma vira só um conjunto de checks novo, não um novo módulo. Endpoints: <code>POST /projects/:id/geo/audit</code>, <code>GET /projects/:id/geo/latest</code>, <code>POST /public/geo-check</code> (rate-limited). Migrations: GeoScore model deployed; WriService refatorado para usar CategoryScore genérico. Testes: 24 Jest + 17 node:test (novo geo-audit.util.test.ts com 11 testes), todos verdes. Build, lint, CI/CD: verde. Próximo: AEO.</div>
+      </div>
+      <div class="decision-item">
+        <div class="d-date">2026-07-21</div>
         <div class="d-title">Lint configurado (ESLint 9 flat config) e CI Pipeline com GitHub Actions</div>
         <div class="d-body">Backend (ESLint 9 + typescript-eslint 8) e frontend (ESLint 9 + eslint-config-next) — lint estava quebrado pré-existentemente (dependências não instaladas). Criado <code>.github/workflows/ci.yml</code>: gatilhos em push/pull_request para main, Node 20 LTS, steps de lint (ambos) → build (ambos) → test (27 testes: Jest+node:test backend, Vitest frontend). Sem deploy (fora de escopo). Decisões confirmadas: Node 20 LTS (alinhado ao <code>engines.node: ">=20"</code> do package.json raiz), ESLint idiomático por framework (sem Prettier, sem generalização desnecessária). Fecha "CI/CD validação" em <code>docs/MASTER_CHECKLIST.md</code>. Próxima fase: deploy e observabilidade.</div>
       </div>
@@ -799,7 +803,7 @@
     </div>
 
     <div class="footer animate" style="--i:37">
-      Última atualização: 2026-07-21 &middot; Fontes: docs/VISION.md, docs/PRODUCT.md, docs/MASTER_CHECKLIST.md,
+      Última atualização: 2026-07-21 (GEO módulo concluído) &middot; Fontes: docs/VISION.md, docs/PRODUCT.md, docs/MASTER_CHECKLIST.md,
       docs/DECISIONS.md, docs/BACKLOG.md, docs/EXECUTION_LOG.md e inspeção do código-fonte (backend/, frontend/).<br>
       Este arquivo é uma leitura visual dos documentos acima — os arquivos .md continuam sendo a fonte oficial do projeto
       (Constituição do WRI, regra 10). Regenere este painel sempre que MASTER_CHECKLIST.md, DECISIONS.md ou BACKLOG.md
