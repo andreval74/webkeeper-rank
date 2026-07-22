@@ -96,6 +96,26 @@ Ver `docs/roadmap.html` e `docs/MASTER_CHECKLIST.md`.
 
 ---
 
+## 2026-07-21 — Implementação do módulo GEO (primeira de 9 categorias WRI)
+
+**Pedido:** Implementar módulo GEO (Generative Engine Optimization) replicando padrão WRI, com 8 checks iniciais, estabelecendo template reutilizável para 8 categorias restantes (AEO, Brand, Authority, UX, Reputation, Social, Local, Conversion).
+
+**Prompt gerado:** Plano em 6 fases (documentado em contexto de /make-plan — vide `get_observations([570])` para detalhes completos).
+
+**Status:** Executado e verificado (build ✅, lint ✅, testes ✅, git status clean).
+
+**Resultado:** 
+- Schema: `GeoScore` model criado, migration deployada (Neon PostgreSQL)
+- Backend: novo módulo `geo/` com service, 2 controllers (autenticado + público), util com 8 checks, DTO, domain guard, module descriptor
+- Testes: 4 Jest (service) + 11 node:test (util), todos verdes; suite completa roda 24 Jest + 17 node:test sem regressão
+- Integração: GeoModule registrado em `app.module.ts`, endpoints públicos e privados funcionais
+- Documentação: README.md do módulo, DECISIONS.md com decisão de design, MASTER_CHECKLIST.md atualizado, EXECUTION_LOG.md (este)
+- Qualidade: ESLint clean, TypeScript build clean, `npm run test` + `npm run test:node` 100% green
+
+**Próximo:** AEO usando padrão GEO idêntico; depois Design System completo e IA + agente explicativo (médio prazo).
+
+---
+
 ## 2026-07-19 — Melhoria de layout de docs/roadmap.html
 
 **Pedido:** Melhorar o layout do arquivo gerado pela skill `/visual-explainer` (`docs/roadmap.html`), que cresceu em 4 rodadas de edição sem nunca ser revisto como um todo do ponto de vista visual.

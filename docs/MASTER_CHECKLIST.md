@@ -21,7 +21,9 @@ Checklist do que existe e do que falta no WebKeeper Rank. O Claude Code deve con
 - [x] Módulo de empresa (Company) básico
 - [x] Motor de auditoria determinística ampliado (14 checks: Security 7 / Performance 2 / SEO 5)
 - [x] Rota pública de checagem (sem login), com rate limiting e validação de hostname
-- [ ] Módulos completos: SEO, GEO, AEO, Brand, Authority, Performance, UX, Reputation, Social, Local, Security, Conversion
+- [x] Módulos WRI base (SEO, Security, Performance) — 14 checks determinísticos + rota pública
+- [x] Módulo GEO (Generative Engine Optimization) — 8 checks iniciais, padrão replicável
+- [ ] Módulos restantes (AEO, Brand, Authority, UX, Reputation, Social, Local, Conversion) — usar padrão GEO
 - [ ] Filas assíncronas (BullMQ + Redis/Upstash)
 - [ ] Multiempresa/permissões avançadas por perfil de usuário
 

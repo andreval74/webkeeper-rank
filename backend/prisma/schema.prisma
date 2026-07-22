@@ -48,9 +48,10 @@ model Project {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  company Company    @relation(fields: [companyId], references: [id])
+  company Company         @relation(fields: [companyId], references: [id])
   metrics Metric[]
-  scores  WriScore[]
+  scores  CategoryScore[]
+  geoScores GeoScore[]
 }
 
 model Metric {
@@ -64,12 +65,29 @@ model Metric {
   project Project @relation(fields: [projectId], references: [id])
 }
 
-model WriScore {
+model CategoryScore {
   id        String   @id @default(cuid())
   projectId String
+  category  String
   score     Float
   breakdown Json
   createdAt DateTime @default(now())
 
   project Project @relation(fields: [projectId], references: [id])
+
+  @@index([projectId, category, createdAt])
+}
+
+model GeoScore {
+  id        String   @id @default(cuid())
+  projectId String
+  category  String   @default("GEO")
+  score     Float
+  breakdown Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([projectId, category, createdAt])
 }

@@ -11,7 +11,7 @@ describe('WriService', () => {
     project: { findUnique: jest.fn() },
     $transaction: jest.fn(),
     metric: { createMany: jest.fn() },
-    wriScore: { create: jest.fn(), findFirst: jest.fn() },
+    categoryScore: { create: jest.fn(), findFirst: jest.fn() },
   };
   let service: WriService;
 
@@ -36,8 +36,8 @@ describe('WriService', () => {
     expect(mockPrisma.metric.createMany).toHaveBeenCalledWith({
       data: [{ projectId: 'p1', category: 'Security', key: 'https', value: 1 }],
     });
-    expect(mockPrisma.wriScore.create).toHaveBeenCalledWith({
-      data: { projectId: 'p1', score: 70, breakdown: audit.checks },
+    expect(mockPrisma.categoryScore.create).toHaveBeenCalledWith({
+      data: { projectId: 'p1', category: 'WRI', score: 70, breakdown: audit.checks },
     });
     expect(mockPrisma.$transaction).toHaveBeenCalledTimes(1);
     expect(result).toBe(audit);
@@ -51,13 +51,13 @@ describe('WriService', () => {
     expect(mockPrisma.$transaction).not.toHaveBeenCalled();
   });
 
-  it('latestScore queries the most recent WriScore for the project', async () => {
-    mockPrisma.wriScore.findFirst.mockResolvedValue({ id: 's1', projectId: 'p1', score: 70 });
+  it('latestScore queries the most recent WRI CategoryScore for the project', async () => {
+    mockPrisma.categoryScore.findFirst.mockResolvedValue({ id: 's1', projectId: 'p1', category: 'WRI', score: 70 });
 
     await service.latestScore('p1');
 
-    expect(mockPrisma.wriScore.findFirst).toHaveBeenCalledWith({
-      where: { projectId: 'p1' },
+    expect(mockPrisma.categoryScore.findFirst).toHaveBeenCalledWith({
+      where: { projectId: 'p1', category: 'WRI' },
       orderBy: { createdAt: 'desc' },
     });
   });

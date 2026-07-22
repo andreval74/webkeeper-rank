@@ -1,9 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
-import { runDeterministicAudit } from './wri-audit.util';
+import { runDeterministicGeoAudit } from './geo-audit.util';
 
 @Injectable()
-export class WriService {
+export class GeoService {
   constructor(private readonly prisma: PrismaService) {}
 
   async runAudit(projectId: string) {
@@ -12,7 +12,7 @@ export class WriService {
       throw new NotFoundException('Projeto não encontrado');
     }
 
-    const audit = await runDeterministicAudit(project.domain);
+    const audit = await runDeterministicGeoAudit(project.domain);
 
     await this.prisma.$transaction([
       this.prisma.metric.createMany({
@@ -23,10 +23,10 @@ export class WriService {
           value: check.value,
         })),
       }),
-      this.prisma.categoryScore.create({
+      this.prisma.geoScore.create({
         data: {
           projectId,
-          category: 'WRI',
+          category: 'GEO',
           score: audit.score,
           breakdown: audit.checks as unknown as object,
         },
@@ -37,8 +37,8 @@ export class WriService {
   }
 
   async latestScore(projectId: string) {
-    return this.prisma.categoryScore.findFirst({
-      where: { projectId, category: 'WRI' },
+    return this.prisma.geoScore.findFirst({
+      where: { projectId, category: 'GEO' },
       orderBy: { createdAt: 'desc' },
     });
   }
