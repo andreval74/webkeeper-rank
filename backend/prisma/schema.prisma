@@ -54,6 +54,7 @@ model Project {
   geoScores GeoScore[]
   aeoScores AeoScore[]
   brandScores BrandScore[]
+  authorityScores AuthorityScore[]
 }
 
 model Metric {
@@ -112,6 +113,20 @@ model BrandScore {
   id        String   @id @default(cuid())
   projectId String
   category  String   @default("BRAND")
+  score     Float
+  breakdown Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([projectId, category, createdAt])
+}
+
+model AuthorityScore {
+  id        String   @id @default(cuid())
+  projectId String
+  category  String   @default("AUTHORITY")
   score     Float
   breakdown Json
   createdAt DateTime @default(now())
