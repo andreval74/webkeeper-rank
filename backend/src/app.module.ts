@@ -6,6 +6,7 @@ import { CompanyModule } from './modules/company/company.module';
 import { WriModule } from './modules/wri/wri.module';
 import { GeoModule } from './modules/geo/geo.module';
 import { AeoModule } from './modules/aeo/aeo.module';
+import { BrandModule } from './modules/brand/brand.module';
 import { AppController } from './app.controller';
 
 @Module({
@@ -17,6 +18,7 @@ import { AppController } from './app.controller';
     WriModule,
     GeoModule,
     AeoModule,
+    BrandModule,
   ],
   controllers: [AppController],
 })
