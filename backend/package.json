@@ -11,7 +11,7 @@
     "prisma:migrate": "prisma migrate dev",
     "lint": "eslint \"src/**/*.ts\"",
     "test": "jest",
-    "test:node": "tsx --test src/modules/wri/*.test.ts src/modules/geo/*.test.ts src/modules/aeo/*.test.ts src/modules/brand/*.test.ts src/modules/authority/*.test.ts",
+    "test:node": "tsx --test src/modules/wri/*.test.ts src/modules/geo/*.test.ts src/modules/aeo/*.test.ts src/modules/brand/*.test.ts src/modules/authority/*.test.ts src/modules/ux/*.test.ts src/modules/reputation/*.test.ts src/modules/social/*.test.ts src/modules/local/*.test.ts src/modules/conversion/*.test.ts",
     "test:all": "npm run test && npm run test:node"
   },
   "dependencies": {

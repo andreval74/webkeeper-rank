@@ -55,6 +55,11 @@ model Project {
   aeoScores AeoScore[]
   brandScores BrandScore[]
   authorityScores AuthorityScore[]
+  uxScores UxScore[]
+  reputationScores ReputationScore[]
+  socialScores SocialScore[]
+  localScores LocalScore[]
+  conversionScores ConversionScore[]
 }
 
 model Metric {
@@ -127,6 +132,76 @@ model AuthorityScore {
   id        String   @id @default(cuid())
   projectId String
   category  String   @default("AUTHORITY")
+  score     Float
+  breakdown Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([projectId, category, createdAt])
+}
+
+model UxScore {
+  id        String   @id @default(cuid())
+  projectId String
+  category  String   @default("UX")
+  score     Float
+  breakdown Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([projectId, category, createdAt])
+}
+
+model ReputationScore {
+  id        String   @id @default(cuid())
+  projectId String
+  category  String   @default("REPUTATION")
+  score     Float
+  breakdown Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([projectId, category, createdAt])
+}
+
+model SocialScore {
+  id        String   @id @default(cuid())
+  projectId String
+  category  String   @default("SOCIAL")
+  score     Float
+  breakdown Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([projectId, category, createdAt])
+}
+
+model LocalScore {
+  id        String   @id @default(cuid())
+  projectId String
+  category  String   @default("LOCAL")
+  score     Float
+  breakdown Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([projectId, category, createdAt])
+}
+
+model ConversionScore {
+  id        String   @id @default(cuid())
+  projectId String
+  category  String   @default("CONVERSION")
   score     Float
   breakdown Json
   createdAt DateTime @default(now())

@@ -8,6 +8,11 @@ import { GeoModule } from './modules/geo/geo.module';
 import { AeoModule } from './modules/aeo/aeo.module';
 import { BrandModule } from './modules/brand/brand.module';
 import { AuthorityModule } from './modules/authority/authority.module';
+import { UxModule } from './modules/ux/ux.module';
+import { ReputationModule } from './modules/reputation/reputation.module';
+import { SocialModule } from './modules/social/social.module';
+import { LocalModule } from './modules/local/local.module';
+import { ConversionModule } from './modules/conversion/conversion.module';
 import { AppController } from './app.controller';
 
 @Module({
@@ -21,6 +26,11 @@ import { AppController } from './app.controller';
     AeoModule,
     BrandModule,
     AuthorityModule,
+    UxModule,
+    ReputationModule,
+    SocialModule,
+    LocalModule,
+    ConversionModule,
   ],
   controllers: [AppController],
 })
